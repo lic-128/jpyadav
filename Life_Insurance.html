@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Insurance Plans | Jai Prakash Yadav</title>
+    <meta name="description" content="Explore the best LIC Life Insurance plans in Dwarka Mor, New Delhi. Jeevan Anand, Term Insurance, and more.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { dark: '#0f172a', blue: '#1e3a8a', light: '#f8fafc', gold: '#d4af37', goldHover: '#b5952f' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .float-wa { position:fixed; width:60px; height:60px; bottom:20px; right:90px; background-color:#25d366; color:#FFF; border-radius:50px; text-align:center; font-size:30px; box-shadow:2px 2px 3px #999; z-index:100; display:flex; align-items:center; justify-content:center; transition:transform 0.3s; }
+        .float-call { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#1e3a8a; color:#FFF; border-radius:50px; text-align:center; font-size:30px; box-shadow:2px 2px 3px #999; z-index:100; display:flex; align-items:center; justify-content:center; transition:transform 0.3s; }
+        .float-wa:hover, .float-call:hover { transform:scale(1.1); }
+
+        /* FILTER BUTTONS */
+        .filter-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            color: #475569;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-btn:hover { border-color: #1e3a8a; color: #1e3a8a; background: #eff6ff; }
+        .filter-btn.active { background: #dbeafe; color: #1e3a8a; border-color: #3b82f6; box-shadow: 0 2px 8px rgba(59,130,246,0.2); font-weight: 700; }
+        .filter-btn.active:hover { background: #bfdbfe; border-color: #2563eb; }
+
+        /* PLAN CARD */
+        .plan-card { transition: all 0.3s; display: flex; flex-direction: column; }
+        .plan-card.hidden-card { display: none; }
+        .plan-card:hover { transform: translateY(-4px); }
+        .plan-card ul { flex-grow: 1; }
+        #plans-grid { align-items: stretch; }
+        #plans-grid .plan-card { height: 100%; }
+
+        /* BADGE */
+        .badge { display:inline-block; padding:2px 10px; border-radius:50px; font-size:11px; font-weight:700; letter-spacing:0.05em; }
+        .badge-popular { background:#fef3c7; color:#92400e; }
+        .badge-child { background:#d1fae5; color:#065f46; }
+        .badge-retirement { background:#ede9fe; color:#4c1d95; }
+        .badge-wedding { background:#fce7f3; color:#831843; }
+        .badge-women { background:#fdf2f8; color:#9d174d; }
+        .badge-term { background:#fee2e2; color:#991b1b; }
+        .badge-savings { background:#e0f2fe; color:#0c4a6e; }
+        .badge-ulip { background:#ecfdf5; color:#064e3b; }
+        .badge-pension { background:#fef9c3; color:#713f12; }
+        .badge-wholelife { background:#f0f9ff; color:#0c4a6e; }
+
+        /* SEARCH */
+        #search-input {
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 14px 24px 14px 52px;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+            transition: border 0.2s;
+            background: #fff;
+        }
+        #search-input:focus { border-color: #1e3a8a; }
+
+        /* NO RESULT */
+        #no-result { display: none; }
+
+        /* GOAL CARDS */
+        .goal-card {
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .goal-card:hover { border-color: #1e3a8a; box-shadow: 0 4px 20px rgba(30,58,138,0.12); transform: translateY(-2px); }
+        .goal-card.active { border-color: #1e3a8a; background: #1e3a8a; color: #fff; }
+        .goal-card.active .goal-icon { background: rgba(255,255,255,0.15); }
+        .goal-card.active p { color: #bfdbfe; }
+        .goal-icon { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:20px; background:#eff6ff; color:#1e3a8a; }
+    </style>
+</head>
+<body class="font-sans text-slate-700 bg-brand-light antialiased">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="font-heading font-bold text-2xl text-brand-blue">Jai<span style="color:#d4af37">Prakash</span></a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="index.html" class="text-slate-600 hover:text-brand-blue font-medium">Home</a>
+                    <a href="https://wa.me/919953657817" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-full font-medium hover:bg-green-600 shadow-lg flex items-center gap-2"><i class="fab fa-whatsapp text-sm"></i> WhatsApp</a>
+                    <a href="tel:9953657817" class="bg-brand-blue text-white px-5 py-2 rounded-full font-medium hover:bg-blue-800 shadow-lg flex items-center gap-2"><i class="fas fa-phone-alt text-sm"></i> 9953657817</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button onclick="document.getElementById('mmenu').classList.toggle('hidden')" class="text-brand-blue"><i class="fas fa-bars text-2xl"></i></button>
+                </div>
+            </div>
+        </div>
+        <div id="mmenu" class="hidden md:hidden bg-white border-t">
+            <a href="index.html" class="block px-4 py-3 text-slate-600">Home</a>
+            <a href="Life_Insurance.html" class="block px-4 py-3 text-brand-blue font-bold">Life Insurance</a>
+            <a href="index.html#contact" class="block px-4 py-3 text-slate-600">Contact</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="relative pt-32 pb-16 lg:pt-40 lg:pb-12 overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-50 to-blue-50 -z-10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
+            <div class="inline-block px-4 py-1 mb-4 rounded-full bg-blue-100 text-brand-blue text-sm font-semibold">Chief Life Insurance Advisor — Dwarka Mor, New Delhi</div>
+            <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark mb-4">Life Insurance Plans</h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8">Apne goal ke hisaab se sahi plan chunein. Baccho ki padhai, shaadi, retirement — har zaroorat ke liye LIC ka ek plan hai.</p>
+            <a href="#smart-finder" class="bg-brand-blue text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 shadow-lg inline-block transform hover:-translate-y-1 transition">Apna Plan Dhundein ↓</a>
+        </div>
+    </section>
+
+    <!-- ===== SMART PLAN FINDER ===== -->
+    <section id="smart-finder" class="py-14 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Goal Cards -->
+            <div class="text-center mb-8">
+                <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mb-2">🎯 Aapka Goal Kya Hai?</h2>
+                <p class="text-slate-500 text-sm">Ek goal chunein — related best plans neeche dikhenge</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mb-8">
+                <div class="goal-card" onclick="setGoal('all', this)">
+                    <div class="goal-icon"><i class="fas fa-th-large"></i></div>
+                    <h4 class="font-bold text-sm text-brand-dark">Sab Plans</h4>
+                    <p class="text-xs text-slate-400 mt-1">All categories</p>
+                </div>
+                <div class="goal-card" onclick="setGoal('child', this)">
+                    <div class="goal-icon" style="background:#d1fae5;color:#065f46"><i class="fas fa-child"></i></div>
+                    <h4 class="font-bold text-sm text-brand-dark">Bacche</h4>
+                    <p class="text-xs text-slate-400 mt-1">Padhai & future</p>
+                </div>
+                <div class="goal-card" onclick="setGoal('wedding', this)">
+                    <div class="goal-icon" style="background:#fce7f3;color:#831843"><i class="fas fa-ring"></i></div>
+                    <h4 class="font-bold text-sm text-brand-dark">Shaadi</h4>
+                    <p class="text-xs text-slate-400 mt-1">Marriage fund</p>
+                </div>
+                <div class="goal-card" onclick="setGoal('retirement', this)">
+                    <div class="goal-icon" style="background:#ede9fe;color:#4c1d95"><i class="fas fa-umbrella-beach"></i></div>
+                    <h4 class="font-bold text-sm text-brand-dark">Retirement</h4>
+                    <p class="text-xs text-slate-400 mt-1">Budhape ki chinta na ho</p>
+                </div>
+                <div class="goal-card" onclick="setGoal('savings', this)">
+                    <div class="goal-icon" style="background:#e0f2fe;color:#0c4a6e"><i class="fas fa-piggy-bank"></i></div>
+                    <h4 class="font-bold text-sm text-brand-dark">Savings</h4>
+                    <p class="text-xs text-slate-400 mt-1">Paisa bachao, badhao</p>
+                </div>
+                <div class="goal-card" onclick="setGoal('protection', this)">
+                    <div class="goal-icon" style="background:#fee2e2;color:#991b1b"><i class="fas fa-shield-alt"></i></div>
+                    <h4 class="font-bold text-sm text-brand-dark">Protection</h4>
+                    <p class="text-xs text-slate-400 mt-1">Family ko protect karo</p>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="relative mb-6">
+                <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                <input type="text" id="search-input" placeholder="Plan ka naam search karein... jaise Jeevan Anand, Term, Pension..." oninput="filterPlans()">
+            </div>
+
+            <!-- Type Filter Pills -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button class="filter-btn active" onclick="setFilter('all', this)"><i class="fas fa-list"></i> Sab</button>
+                <button class="filter-btn" onclick="setFilter('endowment', this)"><i class="fas fa-landmark"></i> Endowment</button>
+                <button class="filter-btn" onclick="setFilter('term', this)"><i class="fas fa-shield-alt"></i> Term</button>
+                <button class="filter-btn" onclick="setFilter('moneyback', this)"><i class="fas fa-money-bill-wave"></i> Money Back</button>
+                <button class="filter-btn" onclick="setFilter('pension', this)"><i class="fas fa-umbrella-beach"></i> Pension</button>
+                <button class="filter-btn" onclick="setFilter('child', this)"><i class="fas fa-child"></i> Child Plans</button>
+                <button class="filter-btn" onclick="setFilter('ulip', this)"><i class="fas fa-chart-line"></i> ULIP</button>
+                <button class="filter-btn" onclick="setFilter('wholelife', this)"><i class="fas fa-infinity"></i> Whole Life</button>
+            </div>
+
+            <!-- Result count -->
+            <p class="text-xs text-slate-400 mb-2" id="result-count">Sab plans dikh rahe hain</p>
+        </div>
+    </section>
+
+    <!-- ===== PLANS GRID ===== -->
+    <section id="plans" class="pb-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="plans-grid">
+
+                <!-- ===== ENDOWMENT PLANS ===== -->
+
+                <!-- 1. Jeevan Anand -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="endowment" data-goal="savings" data-popular="true" data-name="jeevan anand">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-popular">⭐ Most Popular</span>
+                        <span class="text-xs text-slate-400">Plan No. 915</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Anand</h3>
+                    <p class="text-slate-500 text-xs mb-3">Endowment + Whole Life combo — ek plan mein do fayde</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Death + Maturity dono benefit</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Maturity ke baad bhi cover jaari</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Bonus + Loan facility</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tax benefit u/s 80C & 10(10D)</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-savings">Savings</span>
+                        <span class="badge badge-popular">Popular</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 2. Jeevan Labh -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="endowment" data-goal="savings" data-popular="true" data-name="jeevan labh">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-popular">⭐ Top Rated</span>
+                        <span class="text-xs text-slate-400">Plan No. 936</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Labh</h3>
+                    <p class="text-slate-500 text-xs mb-3">Limited premium bharo, zyada return pao</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Limited premium payment term</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed + Loyalty Additions</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Higher sum assured available</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Loan facility available</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-savings">Savings</span>
+                        <span class="badge badge-wedding">Shaadi</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 3. New Endowment -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="endowment" data-goal="savings" data-popular="false" data-name="new endowment">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-savings">Endowment</span>
+                        <span class="text-xs text-slate-400">Plan No. 914</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC New Endowment</h3>
+                    <p class="text-slate-500 text-xs mb-3">Savings + Protection ka sahi combination</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed Sum Assured on maturity</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Simple Reversionary Bonus</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Loyalty Addition on maturity</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Death benefit in installments option</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-savings">Savings</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 4. Bima Jyoti -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="endowment" data-goal="savings" data-popular="false" data-name="bima jyoti">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-savings">Guaranteed Returns</span>
+                        <span class="text-xs text-slate-400">Plan No. 760</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Bima Jyoti</h3>
+                    <p class="text-slate-500 text-xs mb-3">Guaranteed additions ke saath secure savings plan</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed additions har saal</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Fixed returns — market risk nahi</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Settlement option for maturity</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tax benefits 80C & 10(10D)</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-savings">Savings</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 5. Jeevan Shiromani -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="endowment" data-goal="savings" data-popular="false" data-name="jeevan shiromani">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge" style="background:#f5f3ff;color:#5b21b6">Premium Plan</span>
+                        <span class="text-xs text-slate-400">Plan No. 947</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Shiromani</h3>
+                    <p class="text-slate-500 text-xs mb-3">High net-worth individuals ke liye premium endowment plan</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Min. Sum Assured ₹1 Crore</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Critical Illness rider included</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>4 premium payment terms</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed additions + bonus</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-savings">Savings</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- ===== TERM PLANS ===== -->
+
+                <!-- 6. LIC Jeevan Amar (Term) -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-red-500"
+                     data-type="term" data-goal="protection" data-popular="true" data-name="jeevan amar term">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-term">🛡️ Pure Protection</span>
+                        <span class="text-xs text-slate-400">Plan No. 855</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Amar</h3>
+                    <p class="text-slate-500 text-xs mb-3">Family ki suraksha ke liye sabse sasta term plan</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Level ya Increasing Sum Assured</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Min. ₹25 Lakh cover</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Accidental Death Benefit Rider</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Up to 80 years age coverage</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-term">Term</span>
+                        <span class="badge badge-popular">Popular</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 7. LIC Yuva Term -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-red-500"
+                     data-type="term" data-goal="protection" data-popular="false" data-name="yuva term">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-term">Youth Special</span>
+                        <span class="text-xs text-slate-400">Plan No. 875</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Yuva Term</h3>
+                    <p class="text-slate-500 text-xs mb-3">Naujawano ke liye low premium high cover term plan</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>18–45 years entry age</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Bahut kam premium</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Online + Offline purchase</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Flexible premium options</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-term">Term</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 8. LIC Digi Term -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-red-500"
+                     data-type="term" data-goal="protection" data-popular="false" data-name="digi term">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-term">Online Only</span>
+                        <span class="text-xs text-slate-400">Plan No. 876</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Digi Term</h3>
+                    <p class="text-slate-500 text-xs mb-3">Pure digital term plan — seedha online lo</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>100% digital process</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Affordable premium rates</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Flexible policy term</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tax benefit u/s 80C</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-term">Term</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- ===== MONEY BACK PLANS ===== -->
+
+                <!-- 9. New Money Back 20 Yrs -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="moneyback" data-goal="savings wedding" data-popular="true" data-name="money back 20 years">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-popular">💰 Cash Back</span>
+                        <span class="text-xs text-slate-400">Plan No. 920</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC New Money Back – 20 Yrs</h3>
+                    <p class="text-slate-500 text-xs mb-3">Har 5 saal mein paisa wapas milta hai</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>20%, 20%, 20% survival benefit</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>40% maturity on completion</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Bonus on full sum assured</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Accident rider available</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-savings">Money Back</span>
+                        <span class="badge badge-wedding">Shaadi</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 10. New Money Back 25 Yrs -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="moneyback" data-goal="savings" data-popular="false" data-name="money back 25 years">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-savings">Money Back</span>
+                        <span class="text-xs text-slate-400">Plan No. 921</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC New Money Back – 25 Yrs</h3>
+                    <p class="text-slate-500 text-xs mb-3">Longer term mein zyada paisa wapas</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>15%, 15%, 15%, 15% survival benefit</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>40% maturity on completion</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Bonus on full sum assured</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Loan facility available</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-savings">Money Back</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 11. Bima Shri -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="moneyback" data-goal="savings wedding" data-popular="false" data-name="bima shri">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-savings">Money Back</span>
+                        <span class="text-xs text-slate-400">Plan No. 748</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Bima Shri</h3>
+                    <p class="text-slate-500 text-xs mb-3">Regular payouts + financial protection</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Regular money back benefits</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed additions every year</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Critical illness rider option</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Min. ₹10 Lakh sum assured</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-savings">Money Back</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- ===== CHILD PLANS ===== -->
+
+                <!-- 12. Jeevan Tarun -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-green-500"
+                     data-type="child" data-goal="child wedding" data-popular="true" data-name="jeevan tarun child">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-child">👶 Child Plan</span>
+                        <span class="text-xs text-slate-400">Plan No. 934</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Tarun</h3>
+                    <p class="text-slate-500 text-xs mb-3">Bacche ki padhai aur shaadi ke liye best plan</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Age 0–12 years entry</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Survival benefits 20–24 years</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>40% maturity at age 25</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Premium Waiver Benefit available</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-child">Bacche</span>
+                        <span class="badge badge-wedding">Shaadi</span>
+                        <span class="badge badge-popular">Popular</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 13. Amrit Bal -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-green-500"
+                     data-type="child" data-goal="child" data-popular="false" data-name="amrit bal child">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-child">👶 Child Plan</span>
+                        <span class="text-xs text-slate-400">Plan No. 774</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Amrit Bal</h3>
+                    <p class="text-slate-500 text-xs mb-3">Bacche ke bhavishya ke liye comprehensive protection</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Age 0–13 years entry</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Flexible premium terms</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed additions + bonus</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Parent ke death par premium waiver</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-child">Bacche</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 14. Jeevan Taruni (Girl Child) -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-pink-400"
+                     data-type="child" data-goal="child wedding" data-popular="false" data-name="jeevan taruni girl child">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-women">👧 Girl Child Special</span>
+                        <span class="text-xs text-slate-400">Plan No. 870</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Taruni</h3>
+                    <p class="text-slate-500 text-xs mb-3">Beti ki padhai aur shaadi ke liye special plan</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Sirf beti ke liye design</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Periodic survival benefits 18–21 yrs</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Premium Waiver Benefit</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Accident cover + Bonus</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-women">Beti</span>
+                        <span class="badge badge-wedding">Shaadi</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- ===== PENSION / RETIREMENT PLANS ===== -->
+
+                <!-- 15. New Jeevan Shanti -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-purple-500"
+                     data-type="pension" data-goal="retirement" data-popular="true" data-name="jeevan shanti pension retirement">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-retirement">🏖️ Retirement</span>
+                        <span class="text-xs text-slate-400">Plan No. 858</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC New Jeevan Shanti</h3>
+                    <p class="text-slate-500 text-xs mb-3">Ek baar invest karo, zindagi bhar pension pao</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Deferred annuity plan</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Single & Joint life option</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed fixed pension</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Return of Purchase Price on death</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-retirement">Retirement</span>
+                        <span class="badge badge-popular">Popular</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 16. Jeevan Akshay VII -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-purple-500"
+                     data-type="pension" data-goal="retirement" data-popular="false" data-name="jeevan akshay pension">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-retirement">Immediate Annuity</span>
+                        <span class="text-xs text-slate-400">Plan No. 857</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Akshay VII</h3>
+                    <p class="text-slate-500 text-xs mb-3">Turant pension shuru karo — ek hi payment mein</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Immediate annuity — turant income</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>10 annuity options available</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Joint life option for spouse</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Tax benefit u/s 80CCC</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-retirement">Retirement</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 17. New Pension Plus -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-purple-500"
+                     data-type="pension" data-goal="retirement" data-popular="false" data-name="new pension plus ulip retirement">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-ulip">ULIP Pension</span>
+                        <span class="text-xs text-slate-400">Plan No. 867</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC New Pension Plus</h3>
+                    <p class="text-slate-500 text-xs mb-3">Market-linked pension fund — retirement ke liye</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>4 fund options — Bond to Growth</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Single ya Regular premium</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Market-linked higher returns</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Flexible pension start age</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-retirement">Retirement</span>
+                        <span class="badge badge-ulip">ULIP</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- ===== WHOLE LIFE PLANS ===== -->
+
+                <!-- 18. Jeevan Umang -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="wholelife" data-goal="savings retirement" data-popular="true" data-name="jeevan umang whole life">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-wholelife">♾️ Whole Life</span>
+                        <span class="text-xs text-slate-400">Plan No. 945</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Umang</h3>
+                    <p class="text-slate-500 text-xs mb-3">Zindagi bhar income + guaranteed annual benefit</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Survival benefit har saal milta hai</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Cover up to 100 years age</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Lump sum maturity on 100 years</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Bonus + Loan facility</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-wholelife">Whole Life</span>
+                        <span class="badge badge-popular">Popular</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 19. Jeevan Utsav -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                     data-type="wholelife" data-goal="savings" data-popular="false" data-name="jeevan utsav whole life">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-wholelife">Whole Life</span>
+                        <span class="text-xs text-slate-400">Plan No. 971</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Jeevan Utsav</h3>
+                    <p class="text-slate-500 text-xs mb-3">100 saal tak guaranteed income + lifelong security</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Coverage up to 100 years</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Regular Income or Flexi Income</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed + Fixed benefits</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Online + Offline purchase</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-wholelife">Whole Life</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- ===== ULIP PLANS ===== -->
+
+                <!-- 20. Index Plus -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-emerald-500"
+                     data-type="ulip" data-goal="savings" data-popular="false" data-name="index plus ulip">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-ulip">📈 ULIP</span>
+                        <span class="text-xs text-slate-400">Plan No. 873</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Index Plus</h3>
+                    <p class="text-slate-500 text-xs mb-3">Market index se linked — insurance + investment</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Market index tracking returns</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Guaranteed additions on maturity</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Refund of Mortality Charges</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Partial withdrawal after 5 years</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-ulip">ULIP</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+                <!-- 21. Nivesh Plus -->
+                <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-emerald-500"
+                     data-type="ulip" data-goal="savings" data-popular="false" data-name="nivesh plus ulip single premium">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge badge-ulip">Single Premium ULIP</span>
+                        <span class="text-xs text-slate-400">Plan No. 749</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">LIC Nivesh Plus</h3>
+                    <p class="text-slate-500 text-xs mb-3">Ek baar mein invest karo — ULIP ka fayda lo</p>
+                    <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Single premium payment</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>4 fund options available</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Accidental Death Benefit Rider</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Partial withdrawal after 5 years</li>
+                    </ul>
+                    <div class="flex gap-1 flex-wrap mb-4">
+                        <span class="badge badge-ulip">ULIP</span>
+                    </div>
+                    <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+                </div>
+
+            </div>
+
+            <!-- No Result Message -->
+            <div id="no-result" class="text-center py-20">
+                <i class="fas fa-search text-5xl text-slate-300 mb-4"></i>
+                <h3 class="font-heading text-xl font-bold text-slate-400">Koi plan nahi mila</h3>
+                <p class="text-slate-400 mt-2">Dusra naam try karein ya filter hata dein</p>
+                <button onclick="resetAll()" class="mt-4 bg-brand-blue text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-blue-800 transition">Sab Plans Dikhao</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-16 bg-brand-blue text-white text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-heading text-3xl font-bold mb-4">Sahi Plan Chunne Mein Help Chahiye?</h2>
+            <p class="mb-8 text-blue-100">Free consultation ke liye abhi contact karein — Jai Prakash ji personally guide karenge.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="index.html#contact" class="px-8 py-3 rounded-full font-bold hover:bg-yellow-500 transition" style="background:#d4af37;color:#0f172a">📋 Contact Now</a>
+                <a href="tel:9953657817" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-brand-blue transition flex items-center justify-center gap-2"><i class="fas fa-phone-alt"></i> 9953657817</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-dark text-white py-8 text-center">
+        <p>&copy; 2025 Jai Prakash Yadav. All Rights Reserved.</p>
+        <p class="text-slate-400 text-sm mt-2">Website Designed & Developed by <span style="color:#d4af37;font-weight:600;">Shubham Pal</span></p>
+    </footer>
+
+    <!-- Floating Buttons Removed -->
+
+    <script>
+        var activeType = 'all';
+        var activeGoal = 'all';
+
+        function setGoal(goal, el) {
+            activeGoal = goal;
+            document.querySelectorAll('.goal-card').forEach(function(c){ c.classList.remove('active'); });
+            el.classList.add('active');
+            filterPlans();
+        }
+
+        function setFilter(type, el) {
+            activeType = type;
+            document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+            el.classList.add('active');
+            filterPlans();
+        }
+
+        function filterPlans() {
+            var search = document.getElementById('search-input').value.toLowerCase().trim();
+            var cards = document.querySelectorAll('.plan-card');
+            var visible = 0;
+
+            cards.forEach(function(card) {
+                var type = card.getAttribute('data-type') || '';
+                var goal = card.getAttribute('data-goal') || '';
+                var name = card.getAttribute('data-name') || '';
+                var cardText = card.innerText.toLowerCase();
+
+                var typeMatch = (activeType === 'all') || (type === activeType);
+                var goalMatch = (activeGoal === 'all') || (goal.indexOf(activeGoal) !== -1);
+                var searchMatch = !search || cardText.indexOf(search) !== -1 || name.indexOf(search) !== -1;
+
+                if (typeMatch && goalMatch && searchMatch) {
+                    card.classList.remove('hidden-card');
+                    visible++;
+                } else {
+                    card.classList.add('hidden-card');
+                }
+            });
+
+            document.getElementById('no-result').style.display = (visible === 0) ? 'block' : 'none';
+            document.getElementById('result-count').textContent = visible + ' plan' + (visible !== 1 ? 's' : '') + ' dikh rahe hain';
+        }
+
+        function resetAll() {
+            activeType = 'all';
+            activeGoal = 'all';
+            document.getElementById('search-input').value = '';
+            document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+            document.querySelector('.filter-btn').classList.add('active');
+            document.querySelectorAll('.goal-card').forEach(function(c){ c.classList.remove('active'); });
+            filterPlans();
+        }
+
+        // Init count
+        filterPlans();
+    </script>
+</body>
+</html>
