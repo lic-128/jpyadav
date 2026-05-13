@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Insurance Plans | Jai Prakash Yadav | Dwarka Mor, New Delhi</title>
+    <meta name="description" content="Best Health Insurance plans in Dwarka Mor, New Delhi. Family Floater, Critical Illness, Senior Citizen plans. Expert guidance by Jai Prakash Yadav. Call 9953657817.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { brand: { dark:'#0f172a', blue:'#1e3a8a', light:'#f8fafc', gold:'#d4af37' } },
+                    fontFamily: { sans:['Inter','sans-serif'], heading:['Poppins','sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity:0; transform:translateY(20px); }
+        @keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
+
+        .filter-btn { padding:10px 20px; border-radius:50px; font-weight:600; font-size:14px; cursor:pointer; border:2px solid #e2e8f0; background:#fff; color:#475569; transition:all 0.2s; display:flex; align-items:center; gap:8px; }
+        .filter-btn:hover { border-color:#1e3a8a; color:#1e3a8a; background:#eff6ff; }
+        .filter-btn.active { background:#dbeafe; color:#1e3a8a; border-color:#3b82f6; box-shadow:0 2px 8px rgba(59,130,246,0.2); font-weight:700; }
+
+        .plan-card { transition:all 0.3s; display:flex; flex-direction:column; }
+        .plan-card.hidden-card { display:none; }
+        .plan-card:hover { transform:translateY(-4px); }
+        .plan-card ul { flex-grow:1; }
+        #plans-grid { align-items:stretch; }
+        #plans-grid .plan-card { height:100%; }
+
+        .badge { display:inline-block; padding:2px 10px; border-radius:50px; font-size:11px; font-weight:700; letter-spacing:0.05em; }
+        .badge-popular  { background:#fef3c7; color:#92400e; }
+        .badge-family   { background:#d1fae5; color:#065f46; }
+        .badge-senior   { background:#ede9fe; color:#4c1d95; }
+        .badge-critical { background:#fee2e2; color:#991b1b; }
+        .badge-topup    { background:#e0f2fe; color:#0c4a6e; }
+        .badge-maternity{ background:#fce7f3; color:#831843; }
+        .badge-group    { background:#ecfdf5; color:#064e3b; }
+        .badge-personal { background:#fef9c3; color:#713f12; }
+
+        #search-input { border:2px solid #e2e8f0; border-radius:50px; padding:14px 24px 14px 52px; font-size:16px; width:100%; outline:none; transition:border 0.2s; background:#fff; }
+        #search-input:focus { border-color:#1e3a8a; }
+
+        .calc-input { width:100%; padding:10px 14px; border:2px solid #e2e8f0; border-radius:12px; font-family:inherit; font-size:15px; outline:none; transition:border 0.2s; background:#f8fafc; }
+        .calc-input:focus { border-color:#1e3a8a; background:#fff; }
+
+        .enq-btn { display:block; width:100%; background:#1e3a8a; color:white; text-align:center; padding:12px; border-radius:12px; font-weight:700; font-size:14px; text-decoration:none; transition:all 0.2s; border:none; cursor:pointer; font-family:inherit; margin-top:auto; }
+        .enq-btn:hover { background:#1e40af; transform:translateY(-1px); }
+
+        .step-card { background:#fff; border-radius:16px; padding:24px; box-shadow:0 4px 20px rgba(0,0,0,0.06); text-align:center; border-bottom:3px solid #1e3a8a; }
+        .step-num { width:44px; height:44px; border-radius:50%; background:#1e3a8a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; margin:0 auto 12px; font-family:'Poppins',sans-serif; }
+
+        .faq-item { border:1px solid #e2e8f0; border-radius:14px; overflow:hidden; margin-bottom:10px; }
+        .faq-q { padding:18px 20px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:600; color:#0f172a; background:#fff; transition:background 0.2s; }
+        .faq-q:hover { background:#f8fafc; }
+        .faq-a { display:none; padding:0 20px 18px; color:#64748b; font-size:14px; line-height:1.7; background:#fff; }
+        .faq-item.open .faq-a { display:block; }
+        .faq-item.open .faq-icon { transform:rotate(45deg); }
+        .faq-icon { transition:transform 0.2s; color:#1e3a8a; font-size:1.1rem; }
+
+        #no-result { display:none; }
+
+        .claim-step { display:flex; gap:16px; align-items:flex-start; padding:20px; background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,0.05); }
+        .claim-num { width:36px; height:36px; border-radius:50%; background:#1e3a8a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0; font-family:'Poppins',sans-serif; }
+    </style>
+</head>
+<body class="font-sans text-slate-700 bg-brand-light antialiased">
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-md fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+            <div class="flex items-center">
+                <a href="index.html" class="font-heading font-bold text-2xl text-brand-blue">Jai<span style="color:#d4af37">Prakash</span></a>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="index.html" class="text-slate-600 hover:text-brand-blue font-medium">Home</a>
+                <a href="Life_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Life Insurance</a>
+                <a href="Health_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Health Insurance</a>
+                <a href="Vehicle_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Vehicle</a>
+                <a href="Mutual_Funds.html" class="text-slate-600 hover:text-brand-blue font-medium">Mutual Funds</a>
+                <a href="https://wa.me/919953657817" target="_blank" class="bg-brand-blue text-white px-4 py-2 rounded-full font-medium hover:bg-blue-800 shadow-lg flex items-center gap-2"><i class="fab fa-whatsapp text-sm"></i> WhatsApp</a>
+                <a href="tel:9953657817" class="bg-brand-blue text-white px-5 py-2 rounded-full font-medium hover:bg-blue-800 shadow-lg flex items-center gap-2"><i class="fas fa-phone-alt text-sm"></i> 9953657817</a>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button onclick="document.getElementById('mmenu').classList.toggle('hidden')" class="text-brand-blue"><i class="fas fa-bars text-2xl"></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="mmenu" class="hidden md:hidden bg-white border-t">
+        <a href="index.html" class="block px-4 py-3 text-slate-600">Home</a>
+        <a href="https://wa.me/919953657817" class="block px-4 py-3 text-brand-blue font-bold">WhatsApp</a>
+        <a href="tel:9953657817" class="block px-4 py-3 text-brand-blue font-bold">Call Now</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative pt-32 pb-16 lg:pt-40 lg:pb-12 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-blue-50 -z-10"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
+        <div class="inline-block px-4 py-1 mb-4 rounded-full bg-blue-100 text-brand-blue text-sm font-semibold">Chief Life Insurance Advisor — Dwarka Mor, New Delhi</div>
+        <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark leading-tight mb-4">Health Insurance<br><span style="color:#d4af37">Plans & Coverage</span></h1>
+        <p class="text-lg text-slate-600 mb-8 leading-relaxed max-w-2xl mx-auto">Apne aur apne parivaar ki health secure karein. Bimari ka kharcha hum uthayenge — aap bas theek hone par focus karein.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a href="#plans" class="bg-brand-blue text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 shadow-lg text-center transition">Plans Dekhein ↓</a>
+            <a href="https://wa.me/919953657817" target="_blank" class="border-2 border-brand-blue text-brand-blue px-8 py-3 rounded-full font-semibold hover:bg-blue-50 flex items-center justify-center gap-2 transition"><i class="fab fa-whatsapp"></i> Free Consultation</a>
+        </div>
+        <!-- Stats row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+            <div class="bg-white p-5 rounded-2xl shadow-md text-center border-t-4 border-brand-blue">
+                <div class="text-3xl mb-2">🏥</div>
+                <div class="font-heading font-bold text-brand-blue text-xl">₹5 Lakh+</div>
+                <div class="text-slate-500 text-sm">Sum Insured</div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-md text-center border-t-4 border-brand-blue">
+                <div class="text-3xl mb-2">⚡</div>
+                <div class="font-heading font-bold text-brand-blue text-xl">Cashless</div>
+                <div class="text-slate-500 text-sm">5000+ Hospitals</div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-md text-center border-t-4 border-brand-blue">
+                <div class="text-3xl mb-2">🛡️</div>
+                <div class="font-heading font-bold text-brand-blue text-xl">Day 1</div>
+                <div class="text-slate-500 text-sm">Coverage Active</div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-md text-center border-t-4 border-brand-blue">
+                <div class="text-3xl mb-2">📋</div>
+                <div class="font-heading font-bold text-brand-blue text-xl">No Paperwork</div>
+                <div class="text-slate-500 text-sm">Hum Sambhalenge</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY HEALTH INSURANCE -->
+<section class="py-14 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">Kyun Zaroori Hai?</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">Health Insurance Kyun Lena Chahiye?</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-red-50 border border-red-100 rounded-2xl p-6">
+                <div class="text-3xl mb-3">📈</div>
+                <h3 class="font-heading font-bold text-brand-dark mb-2">Mehnga Ilaj</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Hospital mein ek raat ka kharcha ₹20,000 se ₹1,00,000 tak ho sakta hai. Bina insurance ke yeh savings khatam kar deta hai.</p>
+            </div>
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6">
+                <div class="text-3xl mb-3">👨‍👩‍👧‍👦</div>
+                <h3 class="font-heading font-bold text-brand-dark mb-2">Puri Family Cover</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Family floater plan mein ek premium se puri family cover hoti hai — husband, wife, aur bachche sab ek saath.</p>
+            </div>
+            <div class="bg-green-50 border border-green-100 rounded-2xl p-6">
+                <div class="text-3xl mb-3">💰</div>
+                <h3 class="font-heading font-bold text-brand-dark mb-2">Tax Benefit</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Section 80D ke under health insurance premium pe tax deduction milti hai — ₹25,000 tak apne liye aur ₹50,000 senior citizens ke liye.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PLANS SECTION -->
+<section id="plans" class="py-14 bg-brand-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">Hamare Plans</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">Health Insurance Plans</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+        </div>
+
+        <!-- Search -->
+        <div class="relative max-w-2xl mx-auto mb-6">
+            <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+            <input type="text" id="search-input" placeholder="Plan dhundein... jaise Family, Critical, Senior..." oninput="filterPlans()">
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-3 justify-center mb-4">
+            <button class="filter-btn active" onclick="setFilter('all',this)"><i class="fas fa-list"></i> Sab Plans</button>
+            <button class="filter-btn" onclick="setFilter('individual',this)"><i class="fas fa-user"></i> Individual</button>
+            <button class="filter-btn" onclick="setFilter('family',this)"><i class="fas fa-users"></i> Family</button>
+            <button class="filter-btn" onclick="setFilter('senior',this)"><i class="fas fa-user-clock"></i> Senior Citizen</button>
+            <button class="filter-btn" onclick="setFilter('critical',this)"><i class="fas fa-heartbeat"></i> Critical Illness</button>
+            <button class="filter-btn" onclick="setFilter('topup',this)"><i class="fas fa-plus-circle"></i> Top-Up</button>
+            <button class="filter-btn" onclick="setFilter('group',this)"><i class="fas fa-building"></i> Group</button>
+        </div>
+        <p class="text-xs text-slate-400 text-center mb-6" id="result-count">Sab plans dikh rahe hain</p>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="plans-grid">
+
+            <!-- 1. Family Floater -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue" data-type="family" data-name="family floater health insurance">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-popular">⭐ Most Popular</span>
+                    <span class="text-green-600 font-bold text-sm bg-green-50 px-3 py-1 rounded-full">₹499/mo se</span>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4 text-brand-blue text-xl"><i class="fas fa-users"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Family Floater Plan</h3>
+                <p class="text-slate-500 text-sm mb-4">Ek premium mein poori family cover — husband, wife aur bachche sab.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sum insured: ₹3L – ₹50L</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Cashless treatment 5000+ hospitals</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Pre + Post hospitalization cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>No-claim bonus every year</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Day care procedures included</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-family">Family</span><span class="badge badge-popular">Best Value</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 2. Individual Health -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue" data-type="individual" data-name="individual health insurance personal">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-personal">Personal</span>
+                    <span class="text-green-600 font-bold text-sm bg-green-50 px-3 py-1 rounded-full">₹299/mo se</span>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4 text-brand-blue text-xl"><i class="fas fa-user"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Individual Health Plan</h3>
+                <p class="text-slate-500 text-sm mb-4">Sirf apne liye — affordable premium mein complete medical cover.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sum insured: ₹2L – ₹1Cr</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Room rent cover included</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Ambulance charges cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Restore benefit available</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Tax benefit under 80D</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-personal">Individual</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 3. Critical Illness -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-red-500" data-type="critical" data-name="critical illness cancer heart stroke cover">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-critical">🚨 Critical Cover</span>
+                    <span class="text-green-600 font-bold text-sm bg-green-50 px-3 py-1 rounded-full">Lumpsum Pay</span>
+                </div>
+                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4 text-red-500 text-xl"><i class="fas fa-heartbeat"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Critical Illness Cover</h3>
+                <p class="text-slate-500 text-sm mb-4">Cancer, Heart Attack, Kidney Failure jaise gambhir bimariyon ke liye ek saath puri rashi.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>36+ critical illnesses covered</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Lump sum amount on diagnosis</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Income replacement support</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>No bills needed — direct payment</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Cover: ₹5L – ₹50L</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-critical">Critical Illness</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 4. Senior Citizen -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue" data-type="senior" data-name="senior citizen elderly parents health">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-senior">👴 Senior Plan</span>
+                    <span class="text-green-600 font-bold text-sm bg-green-50 px-3 py-1 rounded-full">60+ Age</span>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4 text-purple-600 text-xl"><i class="fas fa-user-clock"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Senior Citizen Plan</h3>
+                <p class="text-slate-500 text-sm mb-4">60 saal se upar ke liye specially designed — pre-existing diseases bhi cover hote hain.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Age 60-80 tak coverage</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Pre-existing disease cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Domiciliary treatment cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Ayush treatment included</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>₹50,000 80D tax benefit</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-senior">Senior Citizen</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 5. Top Up Plan -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue" data-type="topup" data-name="top up super top up booster health">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-topup">🔝 Top-Up</span>
+                    <span class="text-green-600 font-bold text-sm bg-green-50 px-3 py-1 rounded-full">Low Premium</span>
+                </div>
+                <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center mb-4 text-cyan-600 text-xl"><i class="fas fa-plus-circle"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Super Top-Up Plan</h3>
+                <p class="text-slate-500 text-sm mb-4">Existing cover ke upar extra protection — kam premium mein zyada cover.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Deductible ke baad cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Bahut kam premium</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>₹10L – ₹1Cr sum insured</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Company insurance supplement</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Annual aggregate basis</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-topup">Top-Up</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 6. Group Health -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue" data-type="group" data-name="group health insurance corporate employee business">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-group">🏢 Group Plan</span>
+                    <span class="text-green-600 font-bold text-sm bg-green-50 px-3 py-1 rounded-full">Business</span>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600 text-xl"><i class="fas fa-building"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Group Health Plan</h3>
+                <p class="text-slate-500 text-sm mb-4">Apne employees ya group ke liye — bulk mein kam rate mein best coverage.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Min 7 members se shuru</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>No medical checkup required</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Maternity benefit optional</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Corporate tax benefit</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Customizable coverage</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-group">Group / Corporate</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 7. Maternity Plan -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-pink-400" data-type="family" data-name="maternity pregnancy newborn health">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-maternity">🤱 Maternity</span>
+                    <span class="text-green-600 font-bold text-sm bg-green-50 px-3 py-1 rounded-full">Pregnancy Cover</span>
+                </div>
+                <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mb-4 text-pink-500 text-xl"><i class="fas fa-baby"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Maternity Cover Plan</h3>
+                <p class="text-slate-500 text-sm mb-4">Pregnancy se lekar baby ke janam tak — delivery charges aur newborn cover.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Normal + C-section delivery</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Newborn baby 90 days cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Pre/Post natal expenses</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Vaccination cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Waiting period: 9-24 months</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-maternity">Maternity</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+        </div>
+
+        <!-- No Result -->
+        <div id="no-result" class="text-center py-20">
+            <i class="fas fa-search text-5xl text-slate-300 mb-4"></i>
+            <h3 class="font-heading text-xl font-bold text-slate-400">Koi plan nahi mila</h3>
+            <p class="text-slate-400 mt-2">Dusra naam try karein</p>
+            <button onclick="resetFilter()" class="mt-4 bg-brand-blue text-white px-6 py-2 rounded-full text-sm font-semibold">Sab Plans Dikhao</button>
+        </div>
+    </div>
+</section>
+
+<!-- PREMIUM CALCULATOR -->
+<section class="py-14 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">Planning Tool</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">🧮 Premium Calculator</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+            <p class="text-slate-500 text-sm mt-3">Apna estimated premium check karein</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Eldest Member Age</label>
+                        <input type="number" id="age" class="calc-input" value="35" min="18" max="80" oninput="calcPremium()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Family Members</label>
+                        <select id="members" class="calc-input" onchange="calcPremium()">
+                            <option value="1">Self Only</option>
+                            <option value="2">Self + Spouse</option>
+                            <option value="3" selected>Self + Spouse + 1 Child</option>
+                            <option value="4">Self + Spouse + 2 Children</option>
+                            <option value="5">Self + Spouse + 2 Children + Parents</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Sum Insured</label>
+                        <select id="sum" class="calc-input" onchange="calcPremium()">
+                            <option value="300000">₹3 Lakh</option>
+                            <option value="500000" selected>₹5 Lakh</option>
+                            <option value="1000000">₹10 Lakh</option>
+                            <option value="1500000">₹15 Lakh</option>
+                            <option value="2000000">₹20 Lakh</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Plan Type</label>
+                        <select id="plantype" class="calc-input" onchange="calcPremium()">
+                            <option value="1">Individual</option>
+                            <option value="0.85" selected>Family Floater</option>
+                            <option value="1.4">Senior Citizen</option>
+                            <option value="1.3">Critical Illness</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="rounded-2xl p-7 text-white" style="background:linear-gradient(135deg,#1e3a8a,#1e40af)">
+                        <p class="text-blue-300 text-xs font-bold uppercase tracking-widest mb-1">Estimated Annual Premium</p>
+                        <div id="premium-annual" class="text-4xl font-heading font-bold mb-1">₹8,400</div>
+                        <p class="text-blue-300 text-sm mb-5">per year (approx)</p>
+                        <div class="space-y-2 text-sm border-t border-blue-700 pt-4">
+                            <div class="flex justify-between"><span class="text-blue-300">Monthly</span><span id="premium-monthly" class="font-bold">₹700</span></div>
+                            <div class="flex justify-between"><span class="text-blue-300">Tax Saving (80D)</span><span id="tax-saving" class="font-bold text-green-400">₹25,000</span></div>
+                        </div>
+                        <div class="mt-4 bg-blue-900 bg-opacity-50 rounded-xl p-3">
+                            <p class="text-xs text-blue-200">⚠️ Yeh estimate hai. Exact premium ke liye contact karein.</p>
+                        </div>
+                        <a href="https://wa.me/919953657817" target="_blank" class="mt-4 block text-center font-bold py-3 rounded-full transition" style="background:#d4af37;color:#0b1f4a;">
+                            <i class="fas fa-whatsapp mr-2"></i>Exact Quote Lein
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CLAIM PROCESS -->
+<section class="py-14 bg-brand-light">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">Claim Process</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">Claim Kaise Karein?</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+            <p class="text-slate-500 text-sm mt-2">Hum har kadam pe saath hain</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="claim-step">
+                <div class="claim-num">1</div>
+                <div>
+                    <h4 class="font-bold text-brand-dark mb-1">Jai Prakash Ji Ko Call Karein</h4>
+                    <p class="text-slate-500 text-sm">Hospital admit hote hi ya pehle — hamen turant batayein. Hum poora process sambhalenge.</p>
+                </div>
+            </div>
+            <div class="claim-step">
+                <div class="claim-num">2</div>
+                <div>
+                    <h4 class="font-bold text-brand-dark mb-1">Cashless Request Submit</h4>
+                    <p class="text-slate-500 text-sm">Network hospital mein cashless facility ke liye insurance desk pe health card dikhayein. Hum coordinate karenge.</p>
+                </div>
+            </div>
+            <div class="claim-step">
+                <div class="claim-num">3</div>
+                <div>
+                    <h4 class="font-bold text-brand-dark mb-1">Documents Ready Karein</h4>
+                    <p class="text-slate-500 text-sm">Bills, discharge summary, reports — hum batayenge exactly kya chahiye. Koi confusion nahi.</p>
+                </div>
+            </div>
+            <div class="claim-step">
+                <div class="claim-num">4</div>
+                <div>
+                    <h4 class="font-bold text-brand-dark mb-1">Claim Settlement</h4>
+                    <p class="text-slate-500 text-sm">Cashless mein hospital directly payment pata hai. Reimbursement mein 7-15 din mein account mein paisa.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <a href="https://wa.me/919953657817" target="_blank" class="inline-flex items-center gap-2 bg-brand-blue text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 transition shadow-lg">
+                <i class="fab fa-whatsapp"></i> Claim Help Ke Liye WhatsApp Karein
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-14 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">FAQ</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">Aapke Sawal — Hamare Jawab</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+        </div>
+        <div id="faq-list">
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>Health insurance lene ki sahi umar kya hai?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">Jitni jaldi lein utna behtar! 25-35 saal ki umar mein premium sabse kam hota hai aur waiting period bhi pehle puri ho jaati hai. Umar badhne ke saath premium badh jaata hai aur kuch conditions cover nahi hoti.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>Pre-existing disease cover hoti hai?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">Haan, lekin ek waiting period ke baad — generally 2-4 saal. Senior Citizen plans mein yeh 1-2 saal bhi ho sakta hai. Isliye jaldi lena faaydemand hai.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>Cashless aur reimbursement mein kya farq hai?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">Cashless mein network hospital mein aapko kuch nahi bharna — insurance company seedha hospital ko deti hai. Reimbursement mein aap pehle pay karte ho phir company wapas karta hai. Hum cashless hospitals dhundhne mein help karte hain.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>Kitni sum insured leni chahiye?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">Delhi mein minimum ₹5 Lakh family ke liye recommended hai. Agar budget ho toh ₹10-15 Lakh behtar hai. Major surgery aur critical illness mein yahi kaam aata hai. Super top-up se aap zyada cover kam premium mein le sakte hain.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>Company ka health insurance hai toh alag lena chahiye?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">Bilkul lena chahiye! Company insurance naukri chhootne pe band ho jaata hai. Personal plan hamesha active rehta hai. Company cover usually ₹3-5L hota hai jo kaafi nahi hota. Super top-up se extra cover bahut kam mein milta hai.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-14 text-white text-center" style="background:#1e3a8a">
+    <div class="max-w-3xl mx-auto px-4">
+        <h2 class="font-heading text-3xl font-bold mb-4">Abhi Secure Karein Apni Family Ko!</h2>
+        <p class="mb-8 text-blue-100">Free consultation — Jai Prakash ji personally best plan suggest karenge aapke budget ke hisaab se.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="https://wa.me/919953657817" target="_blank" class="px-8 py-3 rounded-full font-bold hover:opacity-90 transition flex items-center justify-center gap-2" style="background:#d4af37;color:#0b1f4a"><i class="fab fa-whatsapp"></i> WhatsApp Karein</a>
+            <a href="tel:9953657817" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-brand-blue transition flex items-center justify-center gap-2"><i class="fas fa-phone-alt"></i> 9953657817</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-8 text-center" style="background:#0f172a">
+    <p class="text-slate-400 text-sm">© 2025 Jai Prakash Yadav. All Rights Reserved.</p>
+    <p class="text-sm mt-2">Website Designed & Developed by <span style="color:#d4af37;font-weight:700;">Shubham Pal</span></p>
+</footer>
+
+<script>
+var activeFilter = 'all';
+function setFilter(type, btn) {
+    activeFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterPlans();
+}
+function filterPlans() {
+    var search = document.getElementById('search-input').value.toLowerCase();
+    var cards = document.querySelectorAll('.plan-card');
+    var visible = 0;
+    cards.forEach(card => {
+        var type = card.getAttribute('data-type');
+        var name = card.getAttribute('data-name');
+        var text = card.innerText.toLowerCase();
+        var typeMatch = activeFilter === 'all' || type === activeFilter;
+        var searchMatch = !search || text.includes(search) || name.includes(search);
+        if (typeMatch && searchMatch) { card.classList.remove('hidden-card'); visible++; }
+        else card.classList.add('hidden-card');
+    });
+    document.getElementById('no-result').style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById('result-count').textContent = visible + ' plan' + (visible !== 1 ? 's' : '') + ' dikh rahe hain';
+}
+function resetFilter() {
+    activeFilter = 'all';
+    document.getElementById('search-input').value = '';
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn').classList.add('active');
+    filterPlans();
+}
+function calcPremium() {
+    var age = parseInt(document.getElementById('age').value) || 35;
+    var members = parseInt(document.getElementById('members').value) || 3;
+    var sum = parseInt(document.getElementById('sum').value) || 500000;
+    var typeMulti = parseFloat(document.getElementById('plantype').value) || 0.85;
+    var base = sum * 0.014;
+    var ageFactor = 1 + Math.max(0, (age - 30) * 0.03);
+    var memberFactor = 1 + (members - 1) * 0.22;
+    var annual = Math.round(base * ageFactor * memberFactor * typeMulti);
+    var monthly = Math.round(annual / 12);
+    var tax = age >= 60 ? 50000 : 25000;
+    document.getElementById('premium-annual').textContent = '₹' + annual.toLocaleString('en-IN');
+    document.getElementById('premium-monthly').textContent = '₹' + monthly.toLocaleString('en-IN');
+    document.getElementById('tax-saving').textContent = '₹' + tax.toLocaleString('en-IN');
+}
+function toggleFaq(el) {
+    var item = el.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+}
+filterPlans(); calcPremium();
+</script>
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Insurance Plans | Jai Prakash Yadav | Dwarka Mor, New Delhi</title>
+    <meta name="description" content="Best Car & Bike Insurance in Dwarka Mor, New Delhi. Zero Depreciation, Comprehensive, Third Party plans. Expert guidance by Jai Prakash Yadav. Call 9953657817.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { brand: { dark:'#0f172a', blue:'#1e3a8a', light:'#f8fafc', gold:'#d4af37' } },
+                    fontFamily: { sans:['Inter','sans-serif'], heading:['Poppins','sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in-up { animation:fadeInUp 0.8s ease-out forwards; opacity:0; transform:translateY(20px); }
+        @keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
+
+        .filter-btn { padding:10px 20px; border-radius:50px; font-weight:600; font-size:14px; cursor:pointer; border:2px solid #e2e8f0; background:#fff; color:#475569; transition:all 0.2s; display:flex; align-items:center; gap:8px; }
+        .filter-btn:hover { border-color:#1e3a8a; color:#1e3a8a; background:#eff6ff; }
+        .filter-btn.active { background:#dbeafe; color:#1e3a8a; border-color:#3b82f6; box-shadow:0 2px 8px rgba(59,130,246,0.2); font-weight:700; }
+
+        .plan-card { transition:all 0.3s; display:flex; flex-direction:column; }
+        .plan-card.hidden-card { display:none; }
+        .plan-card:hover { transform:translateY(-4px); }
+        .plan-card ul { flex-grow:1; }
+        #plans-grid { align-items:stretch; }
+        #plans-grid .plan-card { height:100%; }
+
+        .badge { display:inline-block; padding:2px 10px; border-radius:50px; font-size:11px; font-weight:700; letter-spacing:0.05em; }
+        .badge-popular   { background:#fef3c7; color:#92400e; }
+        .badge-car       { background:#dbeafe; color:#1e40af; }
+        .badge-bike      { background:#d1fae5; color:#065f46; }
+        .badge-zerodep   { background:#ede9fe; color:#4c1d95; }
+        .badge-tp        { background:#fee2e2; color:#991b1b; }
+        .badge-comp      { background:#e0f2fe; color:#0c4a6e; }
+        .badge-commercial{ background:#fef9c3; color:#713f12; }
+        .badge-addon     { background:#fce7f3; color:#831843; }
+
+        #search-input { border:2px solid #e2e8f0; border-radius:50px; padding:14px 24px 14px 52px; font-size:16px; width:100%; outline:none; transition:border 0.2s; background:#fff; }
+        #search-input:focus { border-color:#1e3a8a; }
+        #no-result { display:none; }
+
+        .calc-input { width:100%; padding:10px 14px; border:2px solid #e2e8f0; border-radius:12px; font-family:inherit; font-size:15px; outline:none; transition:border 0.2s; background:#f8fafc; }
+        .calc-input:focus { border-color:#1e3a8a; background:#fff; }
+
+        .enq-btn { display:block; width:100%; background:#1e3a8a; color:white; text-align:center; padding:12px; border-radius:12px; font-weight:700; font-size:14px; text-decoration:none; transition:all 0.2s; border:none; cursor:pointer; font-family:inherit; margin-top:auto; }
+        .enq-btn:hover { background:#1e40af; transform:translateY(-1px); }
+
+        .faq-item { border:1px solid #e2e8f0; border-radius:14px; overflow:hidden; margin-bottom:10px; }
+        .faq-q { padding:18px 20px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:600; color:#0f172a; background:#fff; transition:background 0.2s; }
+        .faq-q:hover { background:#f8fafc; }
+        .faq-a { display:none; padding:0 20px 18px; color:#64748b; font-size:14px; line-height:1.7; background:#fff; }
+        .faq-item.open .faq-a { display:block; }
+        .faq-item.open .faq-icon { transform:rotate(45deg); }
+        .faq-icon { transition:transform 0.2s; color:#1e3a8a; font-size:1.1rem; }
+
+        .claim-step { display:flex; gap:16px; align-items:flex-start; padding:20px; background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,0.05); }
+        .claim-num { width:36px; height:36px; border-radius:50%; background:#1e3a8a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0; font-family:'Poppins',sans-serif; }
+
+        /* Vehicle toggle */
+        .veh-toggle { display:flex; background:#f1f5f9; border-radius:50px; padding:4px; gap:4px; width:fit-content; margin:0 auto 2rem; }
+        .veh-btn { padding:10px 28px; border-radius:50px; border:none; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit; transition:all 0.2s; background:transparent; color:#64748b; }
+        .veh-btn.active { background:#1e3a8a; color:#fff; box-shadow:0 4px 12px rgba(30,58,138,0.25); }
+
+        /* Comparison table */
+        .comp-table { width:100%; border-collapse:collapse; font-size:14px; }
+        .comp-table th { padding:12px 16px; text-align:center; font-weight:700; }
+        .comp-table td { padding:12px 16px; border-top:1px solid #f1f5f9; text-align:center; }
+        .comp-table tr:hover td { background:#f8fafc; }
+        .tick { color:#16a34a; font-size:1.1rem; }
+        .cross { color:#dc2626; font-size:1.1rem; }
+    </style>
+</head>
+<body class="font-sans text-slate-700 bg-brand-light antialiased">
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-md fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+            <div class="flex items-center">
+                <a href="index.html" class="font-heading font-bold text-2xl text-brand-blue">Jai<span style="color:#d4af37">Prakash</span></a>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="index.html" class="text-slate-600 hover:text-brand-blue font-medium">Home</a>
+                <a href="Life_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Life Insurance</a>
+                <a href="Health_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Health Insurance</a>
+                <a href="Vehicle_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Vehicle</a>
+                <a href="Mutual_Funds.html" class="text-slate-600 hover:text-brand-blue font-medium">Mutual Funds</a>
+                <a href="https://wa.me/919953657817" target="_blank" class="bg-brand-blue text-white px-4 py-2 rounded-full font-medium hover:bg-blue-800 shadow-lg flex items-center gap-2"><i class="fab fa-whatsapp text-sm"></i> WhatsApp</a>
+                <a href="tel:9953657817" class="bg-brand-blue text-white px-5 py-2 rounded-full font-medium hover:bg-blue-800 shadow-lg flex items-center gap-2"><i class="fas fa-phone-alt text-sm"></i> 9953657817</a>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button onclick="document.getElementById('mmenu').classList.toggle('hidden')" class="text-brand-blue"><i class="fas fa-bars text-2xl"></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="mmenu" class="hidden md:hidden bg-white border-t">
+        <a href="index.html" class="block px-4 py-3 text-slate-600">Home</a>
+        <a href="https://wa.me/919953657817" class="block px-4 py-3 text-brand-blue font-bold">WhatsApp</a>
+        <a href="tel:9953657817" class="block px-4 py-3 text-brand-blue font-bold">Call Now</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative pt-32 pb-16 lg:pt-40 lg:pb-12 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-blue-50 -z-10"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row items-center gap-10">
+            <div class="lg:w-1/2 text-center lg:text-left fade-in-up">
+                <div class="inline-block px-4 py-1 mb-4 rounded-full bg-blue-100 text-brand-blue text-sm font-semibold">Chief Life Insurance Advisor — Dwarka Mor, New Delhi</div>
+                <h1 class="font-heading text-4xl md:text-5xl font-bold text-brand-dark leading-tight mb-4">Vehicle Insurance<br><span style="color:#d4af37">Car & Bike Plans</span></h1>
+                <p class="text-lg text-slate-600 mb-8 leading-relaxed">Apni gaadi ko har nuksaan se bachayein — accident, chhori, floods, aur teen party — sab cover karein ek saath.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#plans" class="bg-brand-blue text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 shadow-lg text-center transition">Plans Dekhein ↓</a>
+                    <a href="https://wa.me/919953657817" target="_blank" class="border-2 border-brand-blue text-brand-blue px-8 py-3 rounded-full font-semibold hover:bg-blue-50 flex items-center justify-center gap-2 transition"><i class="fab fa-whatsapp"></i> Renewal Karein</a>
+                </div>
+            </div>
+            <div class="lg:w-1/2 grid grid-cols-2 gap-4 fade-in-up">
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center border-t-4 border-brand-blue">
+                    <div class="text-3xl mb-2">⚡</div>
+                    <div class="font-heading font-bold text-brand-blue text-xl">5 Min</div>
+                    <div class="text-slate-500 text-sm">Mein Policy Ready</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center border-t-4 border-brand-blue">
+                    <div class="text-3xl mb-2">🔧</div>
+                    <div class="font-heading font-bold text-brand-blue text-xl">Cashless</div>
+                    <div class="text-slate-500 text-sm">Garage Network</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center border-t-4 border-brand-blue">
+                    <div class="text-3xl mb-2">📋</div>
+                    <div class="font-heading font-bold text-brand-blue text-xl">Zero</div>
+                    <div class="text-slate-500 text-sm">Paperwork Tension</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md text-center border-t-4 border-brand-blue">
+                    <div class="text-3xl mb-2">🏆</div>
+                    <div class="font-heading font-bold text-brand-blue text-xl">Fast</div>
+                    <div class="text-slate-500 text-sm">Claim Settlement</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VEHICLE TOGGLE + PLANS -->
+<section id="plans" class="py-14 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">Hamare Plans</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">Vehicle Insurance Plans</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3 mb-6" style="background:#d4af37"></div>
+            <!-- Car / Bike Toggle -->
+            <div class="veh-toggle">
+                <button class="veh-btn active" onclick="setVehicle('car', this)"><i class="fas fa-car mr-2"></i>Car Insurance</button>
+                <button class="veh-btn" onclick="setVehicle('bike', this)"><i class="fas fa-motorcycle mr-2"></i>Bike Insurance</button>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="relative max-w-2xl mx-auto mb-6">
+            <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+            <input type="text" id="search-input" placeholder="Plan dhundein... jaise Zero Depreciation, Third Party..." oninput="filterPlans()">
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-3 justify-center mb-4">
+            <button class="filter-btn active" onclick="setFilter('all',this)"><i class="fas fa-list"></i> Sab Plans</button>
+            <button class="filter-btn" onclick="setFilter('comprehensive',this)"><i class="fas fa-shield-alt"></i> Comprehensive</button>
+            <button class="filter-btn" onclick="setFilter('thirdparty',this)"><i class="fas fa-gavel"></i> Third Party</button>
+            <button class="filter-btn" onclick="setFilter('zerodep',this)"><i class="fas fa-star"></i> Zero Depreciation</button>
+            <button class="filter-btn" onclick="setFilter('commercial',this)"><i class="fas fa-truck"></i> Commercial</button>
+        </div>
+        <p class="text-xs text-slate-400 text-center mb-6" id="result-count">Sab plans dikh rahe hain</p>
+
+        <!-- Plans Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="plans-grid">
+
+            <!-- 1. Comprehensive Car -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue" data-type="comprehensive" data-vehicle="car" data-name="comprehensive car insurance full cover">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-popular">⭐ Most Popular</span>
+                    <span class="badge badge-car">Car</span>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4 text-brand-blue text-xl"><i class="fas fa-car"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Comprehensive Car Insurance</h3>
+                <p class="text-slate-500 text-sm mb-4">Sabse complete protection — apni gaadi + teen party dono cover.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Own damage cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Third party liability</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Theft & fire protection</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Natural calamity cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Personal accident cover</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-comp">Comprehensive</span><span class="badge badge-car">Car</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 2. Zero Depreciation Car -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-purple-500" data-type="zerodep" data-vehicle="car" data-name="zero depreciation car bumper to bumper">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-zerodep">🛡️ Best Cover</span>
+                    <span class="badge badge-car">Car</span>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4 text-purple-600 text-xl"><i class="fas fa-star"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Zero Depreciation Plan</h3>
+                <p class="text-slate-500 text-sm mb-4">Claim mein depreciation cut nahi hogi — puri value milegi parts ki.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>100% parts value on claim</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>No depreciation deduction</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Rubber, plastic, fiber cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>New cars ke liye best</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>2 claims per year</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-zerodep">Zero Dep</span><span class="badge badge-car">Car</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 3. Third Party Car -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-red-400" data-type="thirdparty" data-vehicle="car" data-name="third party car insurance mandatory legal">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-tp">⚖️ Mandatory</span>
+                    <span class="badge badge-car">Car</span>
+                </div>
+                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4 text-red-500 text-xl"><i class="fas fa-gavel"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Third Party Car Insurance</h3>
+                <p class="text-slate-500 text-sm mb-4">Sarkaar ka kanoon — dusre ko nuksaan hone par aap surakshit rahein.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Legally mandatory (Motor Act)</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Third party injury/death cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Third party property damage</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sabse kam premium</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Unlimited liability cover</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-tp">Third Party</span><span class="badge badge-car">Car</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 4. Comprehensive Bike -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-green-500" data-type="comprehensive" data-vehicle="bike" data-name="comprehensive bike motorcycle two wheeler insurance">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-popular">⭐ Popular</span>
+                    <span class="badge badge-bike">Bike</span>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600 text-xl"><i class="fas fa-motorcycle"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Comprehensive Bike Insurance</h3>
+                <p class="text-slate-500 text-sm mb-4">Bike ke liye full protection — accident se lekar chhori tak sab cover.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Own damage + Third party</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Accident cover rider</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Theft protection</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Flood/fire damage cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>NCB benefit every year</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-comp">Comprehensive</span><span class="badge badge-bike">Bike</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 5. Zero Dep Bike -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-purple-500" data-type="zerodep" data-vehicle="bike" data-name="zero depreciation bike motorcycle two wheeler">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-zerodep">🛡️ Zero Dep</span>
+                    <span class="badge badge-bike">Bike</span>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4 text-purple-600 text-xl"><i class="fas fa-star"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Zero Dep Bike Insurance</h3>
+                <p class="text-slate-500 text-sm mb-4">Naye bike owners ke liye best — full parts value on every claim.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Full parts value milegi</i></li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Plastic/rubber parts cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>No depreciation cut</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>5 saal tak ki bikes ke liye</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Engine protection add-on</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-zerodep">Zero Dep</span><span class="badge badge-bike">Bike</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 6. Third Party Bike -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-red-400" data-type="thirdparty" data-vehicle="bike" data-name="third party bike motorcycle mandatory legal">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-tp">⚖️ Mandatory</span>
+                    <span class="badge badge-bike">Bike</span>
+                </div>
+                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4 text-red-500 text-xl"><i class="fas fa-gavel"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Third Party Bike Insurance</h3>
+                <p class="text-slate-500 text-sm mb-4">Kanoon ke anusar zaroori — sabse kam premium mein basic legal cover.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Legally required — no fine</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Third party injury cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Property damage cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sirf ₹700-1500/year</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>5 year long-term available</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-tp">Third Party</span><span class="badge badge-bike">Bike</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+            <!-- 7. Commercial Vehicle -->
+            <div class="plan-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-yellow-500" data-type="commercial" data-vehicle="both" data-name="commercial vehicle truck tempo auto taxi goods">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="badge badge-commercial">🚛 Commercial</span>
+                    <span class="text-green-600 font-bold text-sm bg-green-50 px-3 py-1 rounded-full">Business</span>
+                </div>
+                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4 text-yellow-600 text-xl"><i class="fas fa-truck"></i></div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-2">Commercial Vehicle Insurance</h3>
+                <p class="text-slate-500 text-sm mb-4">Taxi, Auto, Truck, Tempo, Bus — business vehicles ke liye complete cover.</p>
+                <ul class="text-sm text-slate-600 space-y-2 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Goods in transit cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Passenger liability cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Driver PA cover</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Fleet discount available</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Business income protection</li>
+                </ul>
+                <div class="flex gap-2 flex-wrap mb-5"><span class="badge badge-commercial">Commercial</span></div>
+                <a href="https://wa.me/919953657817" target="_blank" class="enq-btn">Enquire Now</a>
+            </div>
+
+        </div>
+
+        <!-- No Result -->
+        <div id="no-result" class="text-center py-20">
+            <i class="fas fa-search text-5xl text-slate-300 mb-4"></i>
+            <h3 class="font-heading text-xl font-bold text-slate-400">Koi plan nahi mila</h3>
+            <p class="text-slate-400 mt-2">Dusra search try karein</p>
+            <button onclick="resetFilter()" class="mt-4 bg-brand-blue text-white px-6 py-2 rounded-full text-sm font-semibold">Sab Plans Dikhao</button>
+        </div>
+    </div>
+</section>
+
+<!-- PLAN COMPARISON TABLE -->
+<section class="py-14 bg-brand-light">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">Comparison</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">Kaunsa Plan Best Hai?</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <table class="comp-table">
+                <thead style="background:#1e3a8a;color:white;">
+                    <tr>
+                        <th class="text-left pl-6 py-4">Feature</th>
+                        <th>Third Party</th>
+                        <th>Comprehensive</th>
+                        <th style="background:#2d4da8;">Zero Dep ⭐</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="text-left pl-6 font-semibold text-slate-700">Third Party Cover</td><td><i class="fas fa-check tick"></i></td><td><i class="fas fa-check tick"></i></td><td><i class="fas fa-check tick"></i></td></tr>
+                    <tr><td class="text-left pl-6 font-semibold text-slate-700">Own Damage Cover</td><td><i class="fas fa-times cross"></i></td><td><i class="fas fa-check tick"></i></td><td><i class="fas fa-check tick"></i></td></tr>
+                    <tr><td class="text-left pl-6 font-semibold text-slate-700">Theft Protection</td><td><i class="fas fa-times cross"></i></td><td><i class="fas fa-check tick"></i></td><td><i class="fas fa-check tick"></i></td></tr>
+                    <tr><td class="text-left pl-6 font-semibold text-slate-700">Zero Depreciation</td><td><i class="fas fa-times cross"></i></td><td><i class="fas fa-times cross"></i></td><td><i class="fas fa-check tick"></i></td></tr>
+                    <tr><td class="text-left pl-6 font-semibold text-slate-700">Full Parts Value</td><td><i class="fas fa-times cross"></i></td><td><i class="fas fa-times cross"></i></td><td><i class="fas fa-check tick"></i></td></tr>
+                    <tr><td class="text-left pl-6 font-semibold text-slate-700">Flood/Fire Damage</td><td><i class="fas fa-times cross"></i></td><td><i class="fas fa-check tick"></i></td><td><i class="fas fa-check tick"></i></td></tr>
+                    <tr><td class="text-left pl-6 font-semibold text-slate-700">Premium</td><td class="text-green-600 font-bold">Sabse Kam</td><td class="text-yellow-600 font-bold">Medium</td><td class="text-blue-600 font-bold">Thoda Zyada</td></tr>
+                    <tr><td class="text-left pl-6 font-semibold text-slate-700">Best For</td><td class="text-slate-500 text-xs">Old vehicles</td><td class="text-slate-500 text-xs">All vehicles</td><td class="text-slate-500 text-xs">New vehicles</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-center text-slate-500 text-sm mt-4">💡 Nai gaadi ke liye Zero Depreciation best hai — puri claim value milti hai!</p>
+    </div>
+</section>
+
+<!-- PREMIUM CALCULATOR -->
+<section class="py-14 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">Calculator</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">🧮 Premium Estimate</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Vehicle Type</label>
+                        <select id="veh-type" class="calc-input" onchange="calcVehiclePremium()">
+                            <option value="car">Car (Petrol/Diesel)</option>
+                            <option value="bike">Bike / Scooter</option>
+                            <option value="electric">Electric Vehicle</option>
+                            <option value="commercial">Commercial Vehicle</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Vehicle Age</label>
+                        <select id="veh-age" class="calc-input" onchange="calcVehiclePremium()">
+                            <option value="new">New (0-1 Year)</option>
+                            <option value="1-3" selected>1-3 Years</option>
+                            <option value="3-5">3-5 Years</option>
+                            <option value="5-10">5-10 Years</option>
+                            <option value="10+">10+ Years</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">IDV (Vehicle Value ₹)</label>
+                        <input type="number" id="veh-idv" class="calc-input" value="600000" oninput="calcVehiclePremium()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Plan Type</label>
+                        <select id="veh-plan" class="calc-input" onchange="calcVehiclePremium()">
+                            <option value="tp">Third Party Only</option>
+                            <option value="comp" selected>Comprehensive</option>
+                            <option value="zerodep">Zero Depreciation</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="rounded-2xl p-7 text-white" style="background:linear-gradient(135deg,#1e3a8a,#1e40af)">
+                        <p class="text-blue-300 text-xs font-bold uppercase tracking-widest mb-1">Estimated Annual Premium</p>
+                        <div id="veh-premium" class="text-4xl font-heading font-bold mb-1">₹12,000</div>
+                        <p class="text-blue-300 text-sm mb-5">per year (approx)</p>
+                        <div class="space-y-2 text-sm border-t border-blue-700 pt-4">
+                            <div class="flex justify-between"><span class="text-blue-300">IDV Cover</span><span id="veh-idv-show" class="font-bold">₹6,00,000</span></div>
+                            <div class="flex justify-between"><span class="text-blue-300">NCB Discount</span><span id="veh-ncb" class="font-bold text-green-400">Eligible</span></div>
+                        </div>
+                        <div class="mt-4 bg-blue-900 bg-opacity-50 rounded-xl p-3">
+                            <p class="text-xs text-blue-200">⚠️ Exact premium ke liye contact karein — NCB aur addons se kam ho sakta hai.</p>
+                        </div>
+                        <a href="https://wa.me/919953657817" target="_blank" class="mt-4 block text-center font-bold py-3 rounded-full transition" style="background:#d4af37;color:#0b1f4a;">
+                            <i class="fas fa-whatsapp mr-2"></i>Exact Quote Lein
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CLAIM PROCESS -->
+<section class="py-14 bg-brand-light">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">Claim Process</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">Accident ke Baad Kya Karein?</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+            <p class="text-slate-500 text-sm mt-2">Ghabrayein mat — hum saath hain</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="claim-step">
+                <div class="claim-num">1</div>
+                <div>
+                    <h4 class="font-bold text-brand-dark mb-1">Turant Call Karein</h4>
+                    <p class="text-slate-500 text-sm">Accident ke baad pehla kaam — Jai Prakash ji ko call karein. Hum aage ka poora process guide karenge.</p>
+                </div>
+            </div>
+            <div class="claim-step">
+                <div class="claim-num">2</div>
+                <div>
+                    <h4 class="font-bold text-brand-dark mb-1">Photos & FIR (Zaroorat ho toh)</h4>
+                    <p class="text-slate-500 text-sm">Gaadi ki photos lo. Bade accident mein police FIR zaroori hai. Dusri party ki details lein.</p>
+                </div>
+            </div>
+            <div class="claim-step">
+                <div class="claim-num">3</div>
+                <div>
+                    <h4 class="font-bold text-brand-dark mb-1">Network Garage Le Jaayein</h4>
+                    <p class="text-slate-500 text-sm">Cashless garage mein gaadi le jaayein — hum nearest garage dhundhne mein help karenge. Koi advance nahi dena.</p>
+                </div>
+            </div>
+            <div class="claim-step">
+                <div class="claim-num">4</div>
+                <div>
+                    <h4 class="font-bold text-brand-dark mb-1">Surveyor Visit & Settlement</h4>
+                    <p class="text-slate-500 text-sm">Insurance surveyor assess karega. Cashless mein 3-7 din mein gaadi ready ho jaayegi — aapko kuch nahi dena.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <a href="https://wa.me/919953657817" target="_blank" class="inline-flex items-center gap-2 bg-brand-blue text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 transition shadow-lg">
+                <i class="fab fa-whatsapp"></i> Claim Help Ke Liye WhatsApp Karein
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-14 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <span class="text-xs font-bold uppercase tracking-widest" style="color:#d4af37">FAQ</span>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mt-1">Aapke Sawal — Hamare Jawab</h2>
+            <div class="w-16 h-1 rounded mx-auto mt-3" style="background:#d4af37"></div>
+        </div>
+        <div id="faq-list">
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>NCB (No Claim Bonus) kya hota hai?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">NCB ek discount hai jo aapko milti hai agar aapne pichle saal koi claim nahi kiya. Yeh 20% se shuru hokar 50% tak ho sakti hai. Renewal pe automatically apply hoti hai — apna NCB zaaya mat karein choti claims ke liye.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>IDV kya hota hai?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">IDV yaani Insured Declared Value — aapki gaadi ki current market value. Total loss ya chhori hone par yahi amount milti hai. IDV sahi set karwayein — na zyada, na kam.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>Zero Depreciation sab logon ko lena chahiye?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">Zero Dep especially new gaadi ke liye best hai (0-5 saal). Purani gaadi ke liye regular comprehensive bhi kaam karta hai. Premium thoda zyada hota hai par claim mein full value milti hai — long term mein faaydemand hai.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>Renewal miss ho gayi — kya karna chahiye?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">Turant Jai Prakash ji ko call karein! Grace period khatam hone ke baad gaadi inspect karni padti hai. Jitni jaldi renew karein utna better — bina insurance ke gaadi chalana illegal hai aur fine bhi lag sakta hai.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"><span>Flood mein gaadi doob gayi — cover hoga?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-a">Haan! Comprehensive aur Zero Dep plans mein natural calamity — flood, cyclone, earthquake — sab cover hota hai. Engine protection add-on lena na bhoolein — engine ko flood damage mein alag cover milti hai.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-14 text-white text-center" style="background:#1e3a8a">
+    <div class="max-w-3xl mx-auto px-4">
+        <h2 class="font-heading text-3xl font-bold mb-4">Gaadi Ko Surakshit Karein Aaj Hi!</h2>
+        <p class="mb-8 text-blue-100">Renewal ya naya plan — 5 minute mein ready. Jai Prakash ji personally best deal dilaayenge.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="https://wa.me/919953657817" target="_blank" class="px-8 py-3 rounded-full font-bold hover:opacity-90 transition flex items-center justify-center gap-2" style="background:#d4af37;color:#0b1f4a"><i class="fab fa-whatsapp"></i> WhatsApp Karein</a>
+            <a href="tel:9953657817" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-brand-blue transition flex items-center justify-center gap-2"><i class="fas fa-phone-alt"></i> 9953657817</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-8 text-center" style="background:#0f172a">
+    <p class="text-slate-400 text-sm">© 2025 Jai Prakash Yadav. All Rights Reserved.</p>
+    <p class="text-sm mt-2">Website Designed & Developed by <span style="color:#d4af37;font-weight:700;">Shubham Pal</span></p>
+</footer>
+
+<script>
+var activeFilter = 'all';
+var activeVehicle = 'car';
+
+function setVehicle(v, btn) {
+    activeVehicle = v;
+    document.querySelectorAll('.veh-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterPlans();
+}
+function setFilter(type, btn) {
+    activeFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterPlans();
+}
+function filterPlans() {
+    var search = document.getElementById('search-input').value.toLowerCase();
+    var cards = document.querySelectorAll('.plan-card');
+    var visible = 0;
+    cards.forEach(card => {
+        var type = card.getAttribute('data-type');
+        var vehicle = card.getAttribute('data-vehicle');
+        var name = card.getAttribute('data-name');
+        var text = card.innerText.toLowerCase();
+        var typeMatch = activeFilter === 'all' || type === activeFilter;
+        var vehMatch = vehicle === 'both' || vehicle === activeVehicle;
+        var searchMatch = !search || text.includes(search) || name.includes(search);
+        if (typeMatch && vehMatch && searchMatch) { card.classList.remove('hidden-card'); visible++; }
+        else card.classList.add('hidden-card');
+    });
+    document.getElementById('no-result').style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById('result-count').textContent = visible + ' plan' + (visible !== 1 ? 's' : '') + ' dikh rahe hain';
+}
+function resetFilter() {
+    activeFilter = 'all';
+    document.getElementById('search-input').value = '';
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn').classList.add('active');
+    filterPlans();
+}
+function calcVehiclePremium() {
+    var type = document.getElementById('veh-type').value;
+    var age = document.getElementById('veh-age').value;
+    var idv = parseFloat(document.getElementById('veh-idv').value) || 600000;
+    var plan = document.getElementById('veh-plan').value;
+    var baseRates = { car:0.02, bike:0.015, electric:0.018, commercial:0.03 };
+    var ageFactors = { 'new':1.0, '1-3':0.9, '3-5':0.8, '5-10':0.7, '10+':0.6 };
+    var planMulti = { tp:0.3, comp:1.0, zerodep:1.35 };
+    var base = idv * baseRates[type];
+    var premium = Math.round(base * ageFactors[age] * planMulti[plan]);
+    document.getElementById('veh-premium').textContent = '₹' + premium.toLocaleString('en-IN');
+    document.getElementById('veh-idv-show').textContent = '₹' + idv.toLocaleString('en-IN');
+    document.getElementById('veh-ncb').textContent = age === 'new' ? 'Not Applicable' : 'Up to 50% off';
+}
+function toggleFaq(el) {
+    var item = el.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+}
+filterPlans();
+calcVehiclePremium();
+</script>
+</body>
+</html>

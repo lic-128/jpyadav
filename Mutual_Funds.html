@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutual Funds & SIP | Jai Prakash Yadav | Dwarka Mor, New Delhi</title>
+    <meta name="description" content="Invest in best Mutual Funds and SIP plans with Jai Prakash Yadav in Dwarka Mor, New Delhi. Expert guidance on Equity, Debt, ELSS, and SIP investments.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { dark: '#0f172a', blue: '#1e3a8a', light: '#f8fafc', gold: '#d4af37', goldHover: '#b5952f' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* FILTER BUTTONS */
+        .filter-btn {
+            padding: 10px 20px; border-radius: 50px; font-weight: 600;
+            font-size: 14px; cursor: pointer; border: 2px solid #e2e8f0;
+            background: #fff; color: #475569; transition: all 0.2s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .filter-btn:hover { border-color: #1e3a8a; color: #1e3a8a; background: #eff6ff; }
+        .filter-btn.active { background: #dbeafe; color: #1e3a8a; border-color: #3b82f6; box-shadow: 0 2px 8px rgba(59,130,246,0.2); font-weight: 700; }
+        .filter-btn.active:hover { background: #bfdbfe; border-color: #2563eb; }
+
+        /* FUND CARD */
+        .fund-card { transition: all 0.3s; display: flex; flex-direction: column; }
+        .fund-card.hidden-card { display: none; }
+        .fund-card:hover { transform: translateY(-4px); }
+        .fund-card ul { flex-grow: 1; }
+        #funds-grid { align-items: stretch; }
+        #funds-grid .fund-card { height: 100%; }
+
+        /* BADGES */
+        .badge { display:inline-block; padding:2px 10px; border-radius:50px; font-size:11px; font-weight:700; letter-spacing:0.05em; }
+        .badge-popular  { background:#fef3c7; color:#92400e; }
+        .badge-equity   { background:#dbeafe; color:#1e40af; }
+        .badge-debt     { background:#d1fae5; color:#065f46; }
+        .badge-hybrid   { background:#ede9fe; color:#4c1d95; }
+        .badge-elss     { background:#fce7f3; color:#831843; }
+        .badge-index    { background:#e0f2fe; color:#0c4a6e; }
+        .badge-sip      { background:#ecfdf5; color:#064e3b; }
+        .badge-liquid   { background:#fef9c3; color:#713f12; }
+        .badge-intl     { background:#fff7ed; color:#9a3412; }
+
+        /* SEARCH */
+        #search-input {
+            border: 2px solid #e2e8f0; border-radius: 50px;
+            padding: 14px 24px 14px 52px; font-size: 16px;
+            width: 100%; outline: none; transition: border 0.2s; background: #fff;
+        }
+        #search-input:focus { border-color: #1e3a8a; }
+
+        #no-result { display: none; }
+
+        /* GOAL CARDS */
+        .goal-card {
+            cursor: pointer; border: 2px solid #e2e8f0; border-radius: 16px;
+            padding: 20px; text-align: center; transition: all 0.2s; background: #fff;
+        }
+        .goal-card:hover { border-color: #1e3a8a; box-shadow: 0 4px 20px rgba(30,58,138,0.12); transform: translateY(-2px); }
+        .goal-card.active { border-color: #1e3a8a; background: #1e3a8a; color: #fff; }
+        .goal-card.active .goal-icon { background: rgba(255,255,255,0.15); color:#fff; }
+        .goal-card.active p { color: #bfdbfe; }
+        .goal-card.active h4 { color: #fff; }
+        .goal-icon { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:20px; background:#eff6ff; color:#1e3a8a; }
+
+        /* RETURN BADGE */
+        .return-pill {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #f0fdf4; color: #15803d;
+            padding: 3px 10px; border-radius: 50px;
+            font-size: 12px; font-weight: 700;
+        }
+
+        /* SIP CALCULATOR */
+        .calc-input {
+            width: 100%; padding: 10px 14px;
+            border: 2px solid #e2e8f0; border-radius: 12px;
+            font-family: inherit; font-size: 15px; outline: none;
+            transition: border 0.2s; background: #f8fafc;
+        }
+        .calc-input:focus { border-color: #1e3a8a; background: #fff; }
+        input[type=range] { accent-color: #1e3a8a; width: 100%; }
+
+        /* RISK METER */
+        .risk-low    { color: #16a34a; }
+        .risk-medium { color: #d97706; }
+        .risk-high   { color: #dc2626; }
+        .risk-bar-low    { background: linear-gradient(90deg, #16a34a, #22c55e); }
+        .risk-bar-medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .risk-bar-high   { background: linear-gradient(90deg, #ef4444, #f87171); }
+    </style>
+</head>
+<body class="font-sans text-slate-700 bg-brand-light antialiased">
+
+<!-- ===== NAVBAR ===== -->
+<nav class="bg-white shadow-md fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+            <div class="flex items-center">
+                <a href="index.html" class="font-heading font-bold text-2xl text-brand-blue">Jai<span style="color:#d4af37">Prakash</span></a>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="index.html" class="text-slate-600 hover:text-brand-blue font-medium">Home</a>
+                <a href="Life_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Life Insurance</a>
+                <a href="Health_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Health Insurance</a>
+                <a href="Vehicle_Insurance.html" class="text-slate-600 hover:text-brand-blue font-medium">Vehicle</a>
+                <a href="Mutual_Funds.html" class="text-slate-600 hover:text-brand-blue font-medium">Mutual Funds</a>
+                <a href="https://wa.me/919953657817" target="_blank" class="bg-brand-blue text-white px-4 py-2 rounded-full font-medium hover:bg-blue-800 shadow-lg flex items-center gap-2"><i class="fab fa-whatsapp text-sm"></i> WhatsApp</a>
+                <a href="tel:9953657817" class="bg-brand-blue text-white px-5 py-2 rounded-full font-medium hover:bg-blue-800 shadow-lg flex items-center gap-2"><i class="fas fa-phone-alt text-sm"></i> 9953657817</a>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button onclick="document.getElementById('mmenu').classList.toggle('hidden')" class="text-brand-blue"><i class="fas fa-bars text-2xl"></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="mmenu" class="hidden md:hidden bg-white border-t">
+        <a href="index.html" class="block px-4 py-3 text-slate-600">Home</a>
+        <a href="https://wa.me/919953657817" class="block px-4 py-3 text-brand-blue font-bold">WhatsApp</a>
+        <a href="tel:9953657817" class="block px-4 py-3 text-brand-blue font-bold">Call Now</a>
+    </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="relative pt-32 pb-16 lg:pt-40 lg:pb-12 overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-50 to-blue-50 -z-10"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
+        <div class="inline-block px-4 py-1 mb-4 rounded-full bg-blue-100 text-brand-blue text-sm font-semibold">
+            Chief Financial Advisor — Dwarka Mor, New Delhi
+        </div>
+        <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark mb-4">Mutual Funds & SIP</h1>
+        <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
+            Apne sapnon ke liye smart investment karein. Equity, Debt, ELSS, Index Funds — har goal ke liye sahi fund.
+        </p>
+        <a href="#smart-finder" class="bg-brand-blue text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 shadow-lg inline-block transform hover:-translate-y-1 transition">
+            Apna Fund Dhundein ↓
+        </a>
+    </div>
+</section>
+
+<!-- ===== WHY INVEST ===== -->
+<section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="text-center p-6 bg-brand-light rounded-2xl">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-blue text-xl"><i class="fas fa-chart-line"></i></div>
+                <h4 class="font-heading font-bold text-brand-dark text-lg">12–18%</h4>
+                <p class="text-slate-500 text-sm">Equity mein avg. returns</p>
+            </div>
+            <div class="text-center p-6 bg-brand-light rounded-2xl">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-blue text-xl"><i class="fas fa-rupee-sign"></i></div>
+                <h4 class="font-heading font-bold text-brand-dark text-lg">₹500/mo</h4>
+                <p class="text-slate-500 text-sm">Se SIP shuru karein</p>
+            </div>
+            <div class="text-center p-6 bg-brand-light rounded-2xl">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-blue text-xl"><i class="fas fa-shield-alt"></i></div>
+                <h4 class="font-heading font-bold text-brand-dark text-lg">SEBI</h4>
+                <p class="text-slate-500 text-sm">Regulated & safe investment</p>
+            </div>
+            <div class="text-center p-6 bg-brand-light rounded-2xl">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-blue text-xl"><i class="fas fa-file-invoice"></i></div>
+                <h4 class="font-heading font-bold text-brand-dark text-lg">80C Tax</h4>
+                <p class="text-slate-500 text-sm">ELSS se ₹1.5L tak chhoot</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SMART FUND FINDER ===== -->
+<section id="smart-finder" class="py-14 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Goal Cards -->
+        <div class="text-center mb-8">
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mb-2">🎯 Aapka Goal Kya Hai?</h2>
+            <p class="text-slate-500 text-sm">Ek goal chunein — related best funds neeche dikhenge</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mb-8">
+            <div class="goal-card" onclick="setGoal('all', this)">
+                <div class="goal-icon"><i class="fas fa-th-large"></i></div>
+                <h4 class="font-bold text-sm text-brand-dark">Sab Funds</h4>
+                <p class="text-xs text-slate-400 mt-1">All categories</p>
+            </div>
+            <div class="goal-card" onclick="setGoal('wealth', this)">
+                <div class="goal-icon" style="background:#dbeafe;color:#1e40af"><i class="fas fa-chart-line"></i></div>
+                <h4 class="font-bold text-sm text-brand-dark">Wealth</h4>
+                <p class="text-xs text-slate-400 mt-1">Paisa badhao</p>
+            </div>
+            <div class="goal-card" onclick="setGoal('tax', this)">
+                <div class="goal-icon" style="background:#fce7f3;color:#831843"><i class="fas fa-file-invoice"></i></div>
+                <h4 class="font-bold text-sm text-brand-dark">Tax Save</h4>
+                <p class="text-xs text-slate-400 mt-1">80C benefit</p>
+            </div>
+            <div class="goal-card" onclick="setGoal('retirement', this)">
+                <div class="goal-icon" style="background:#ede9fe;color:#4c1d95"><i class="fas fa-umbrella-beach"></i></div>
+                <h4 class="font-bold text-sm text-brand-dark">Retirement</h4>
+                <p class="text-xs text-slate-400 mt-1">Long term plan</p>
+            </div>
+            <div class="goal-card" onclick="setGoal('stable', this)">
+                <div class="goal-icon" style="background:#d1fae5;color:#065f46"><i class="fas fa-lock"></i></div>
+                <h4 class="font-bold text-sm text-brand-dark">Stable</h4>
+                <p class="text-xs text-slate-400 mt-1">Safe returns</p>
+            </div>
+            <div class="goal-card" onclick="setGoal('child', this)">
+                <div class="goal-icon" style="background:#fef3c7;color:#92400e"><i class="fas fa-child"></i></div>
+                <h4 class="font-bold text-sm text-brand-dark">Bacche</h4>
+                <p class="text-xs text-slate-400 mt-1">Future secure</p>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative mb-6">
+            <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+            <input type="text" id="search-input" placeholder="Fund ka naam search karein... jaise ELSS, Index, Bluechip..." oninput="filterFunds()">
+        </div>
+
+        <!-- Type Filter Pills -->
+        <div class="flex flex-wrap gap-2 mb-4">
+            <button class="filter-btn active" onclick="setFilter('all', this)"><i class="fas fa-list"></i> Sab</button>
+            <button class="filter-btn" onclick="setFilter('equity', this)"><i class="fas fa-chart-bar"></i> Equity</button>
+            <button class="filter-btn" onclick="setFilter('elss', this)"><i class="fas fa-file-invoice"></i> ELSS</button>
+            <button class="filter-btn" onclick="setFilter('index', this)"><i class="fas fa-chart-line"></i> Index</button>
+            <button class="filter-btn" onclick="setFilter('hybrid', this)"><i class="fas fa-balance-scale"></i> Hybrid</button>
+            <button class="filter-btn" onclick="setFilter('debt', this)"><i class="fas fa-shield-alt"></i> Debt</button>
+            <button class="filter-btn" onclick="setFilter('liquid', this)"><i class="fas fa-tint"></i> Liquid</button>
+            <button class="filter-btn" onclick="setFilter('international', this)"><i class="fas fa-globe"></i> International</button>
+        </div>
+
+        <!-- Result Count -->
+        <p class="text-xs text-slate-400 mb-2" id="result-count">Sab funds dikh rahe hain</p>
+    </div>
+</section>
+
+<!-- ===== FUNDS GRID ===== -->
+<section id="funds" class="pb-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="funds-grid">
+
+            <!-- ===== EQUITY FUNDS ===== -->
+
+            <!-- 1. Bluechip Fund -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                 data-type="equity" data-goal="wealth retirement" data-name="bluechip large cap equity">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-popular">⭐ Most Popular</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 14–16% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Large Cap / Bluechip Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Top 100 companies mein invest — stable aur reliable growth</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>India ki top companies mein invest</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Long term mein steady returns</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>SEBI regulated fund</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>SIP se ₹500/month se shuru</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-medium font-bold">Medium-High</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-medium h-2 rounded-full" style="width:65%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-equity">Equity</span>
+                    <span class="badge badge-popular">Popular</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- 2. Flexi Cap Fund -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                 data-type="equity" data-goal="wealth retirement child" data-name="flexi cap multi cap equity">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-equity">Flexi Cap</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 15–18% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Flexi Cap Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Large, Mid aur Small cap — fund manager decide karta hai</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Market opportunity ke hisaab se allocation</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Expert fund manager ki strategy</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Diversified portfolio</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Long term wealth creation</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-high font-bold">High</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-high h-2 rounded-full" style="width:80%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-equity">Equity</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- 3. Mid Cap Fund -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                 data-type="equity" data-goal="wealth child" data-name="mid cap equity growth">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-equity">Mid Cap</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 16–20% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Mid Cap Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Growing companies mein invest — higher returns potential</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>101–250 rank companies</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>High growth potential</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>5+ saal ke liye best</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>SIP se rupee cost averaging</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-high font-bold">High</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-high h-2 rounded-full" style="width:85%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-equity">Equity</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- 4. Small Cap Fund -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-brand-blue"
+                 data-type="equity" data-goal="wealth" data-name="small cap equity aggressive">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-equity">Small Cap</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 18–25% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Small Cap Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Chhoti companies, bade returns — long term ke liye</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>251+ rank companies</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Highest growth potential</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>7–10 saal ke liye ideal</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>High risk, high reward</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-high font-bold">Very High</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-high h-2 rounded-full" style="width:95%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-equity">Equity</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- ===== ELSS FUNDS ===== -->
+
+            <!-- 5. ELSS Tax Saver -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-pink-500"
+                 data-type="elss" data-goal="tax wealth" data-name="elss tax saver 80c">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-elss">💰 Tax Saver</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 14–17% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">ELSS Tax Saving Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Tax bachao + paisa badhao — ek hi fund se dono fayde</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>80C mein ₹1.5 Lakh tak deduction</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sirf 3 saal lock-in (sabse kam)</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Equity returns ka fayda</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>SIP ya lumpsum dono se invest</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-medium font-bold">Medium-High</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-medium h-2 rounded-full" style="width:70%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-elss">ELSS</span>
+                    <span class="badge badge-popular">Tax Benefit</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- ===== INDEX FUNDS ===== -->
+
+            <!-- 6. Nifty 50 Index -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-cyan-500"
+                 data-type="index" data-goal="wealth retirement stable" data-name="nifty 50 index fund passive">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-index">📊 Index Fund</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 12–15% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Nifty 50 Index Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Market ke saath chalo — low cost, reliable returns</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>India ki top 50 companies</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Bahut kam expense ratio</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Passive investing — no bias</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Beginners ke liye best</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-medium font-bold">Medium</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-medium h-2 rounded-full" style="width:55%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-index">Index</span>
+                    <span class="badge badge-popular">Beginner Friendly</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- 7. Nifty Next 50 -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-cyan-500"
+                 data-type="index" data-goal="wealth" data-name="nifty next 50 index fund">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-index">📊 Index Fund</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 13–16% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Nifty Next 50 Index Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">51–100 rank companies — agle Nifty 50 stars</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Future large caps mein invest</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Nifty 50 se thoda zyada return</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Low expense ratio</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Long term ke liye best</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-medium font-bold">Medium-High</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-medium h-2 rounded-full" style="width:65%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-index">Index</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- ===== HYBRID FUNDS ===== -->
+
+            <!-- 8. Balanced Advantage Fund -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-violet-500"
+                 data-type="hybrid" data-goal="stable wealth retirement" data-name="balanced advantage hybrid dynamic">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-hybrid">⚖️ Hybrid</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 10–13% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Balanced Advantage Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Equity + Debt mix — market ke hisaab se adjust hota hai</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Dynamically equity-debt balance</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Market girne par protect karta hai</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Moderate risk, good returns</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Retirement planning ke liye best</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-medium font-bold">Medium</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-medium h-2 rounded-full" style="width:50%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-hybrid">Hybrid</span>
+                    <span class="badge badge-popular">Popular</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- 9. Aggressive Hybrid -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-violet-500"
+                 data-type="hybrid" data-goal="wealth stable child" data-name="aggressive hybrid equity oriented">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-hybrid">Aggressive Hybrid</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 12–15% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Aggressive Hybrid Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">65–80% equity + 20–35% debt — best of both worlds</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Equity returns + Debt stability</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>3–5 saal ke liye ideal</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Auto-rebalancing</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>SIP ke liye perfect</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-medium font-bold">Medium-High</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-medium h-2 rounded-full" style="width:60%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-hybrid">Hybrid</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- ===== DEBT FUNDS ===== -->
+
+            <!-- 10. Short Duration Debt -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-green-500"
+                 data-type="debt" data-goal="stable" data-name="short duration debt fixed income">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-debt">🛡️ Debt Fund</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 6–8% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Short Duration Debt Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Safe aur stable — FD se better returns</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>FD se zyada returns</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Market risk nahi hota</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>1–3 saal ke liye best</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Capital protection priority</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-low font-bold">Low</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-low h-2 rounded-full" style="width:25%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-debt">Debt</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- 11. Corporate Bond Fund -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-green-500"
+                 data-type="debt" data-goal="stable retirement" data-name="corporate bond debt income">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-debt">Corporate Bond</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 7–9% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Corporate Bond Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Top rated companies ke bonds mein invest</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>AAA rated bonds only</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Regular income option</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>FD se better tax efficiency</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Low to medium risk</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-low font-bold">Low-Medium</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-low h-2 rounded-full" style="width:35%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-debt">Debt</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- ===== LIQUID FUNDS ===== -->
+
+            <!-- 12. Liquid Fund -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-yellow-400"
+                 data-type="liquid" data-goal="stable" data-name="liquid fund emergency overnight">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-liquid">💧 Liquid</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 5–7% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">Liquid Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">Emergency fund rakho — savings account se better</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Instant redemption (upto ₹50K)</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Savings account se 2x returns</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Koi lock-in nahi</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Emergency fund ke liye best</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-low font-bold">Very Low</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-low h-2 rounded-full" style="width:10%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-liquid">Liquid</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+            <!-- ===== INTERNATIONAL FUNDS ===== -->
+
+            <!-- 13. US / Global Fund -->
+            <div class="fund-card bg-white p-7 rounded-2xl shadow-lg border-t-4 border-orange-400"
+                 data-type="international" data-goal="wealth" data-name="international global us fund">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="badge badge-intl">🌍 International</span>
+                    <span class="return-pill"><i class="fas fa-arrow-up text-xs"></i> 12–18% p.a.</span>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-brand-dark mb-1">International / Global Fund</h3>
+                <p class="text-slate-500 text-xs mb-3">USA, Europe mein invest karein — rupee risk hedge</p>
+                <ul class="text-sm text-slate-600 space-y-1 mb-5">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Google, Apple, Microsoft jaise stocks</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Global diversification</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Dollar appreciation ka fayda</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Long term wealth creation</li>
+                </ul>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Risk Level</span><span class="risk-high font-bold">High</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="risk-bar-high h-2 rounded-full" style="width:80%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-1 flex-wrap mb-4">
+                    <span class="badge badge-intl">International</span>
+                </div>
+                <a href="index.html#contact" class="block w-full bg-brand-blue text-white text-center py-3 rounded-xl font-semibold hover:bg-blue-800 transition">Enquire Now</a>
+            </div>
+
+        </div>
+
+        <!-- No Result -->
+        <div id="no-result" class="text-center py-20">
+            <i class="fas fa-search text-5xl text-slate-300 mb-4"></i>
+            <h3 class="font-heading text-xl font-bold text-slate-400">Koi fund nahi mila</h3>
+            <p class="text-slate-400 mt-2">Dusra naam try karein ya filter hata dein</p>
+            <button onclick="resetAll()" class="mt-4 bg-brand-blue text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-blue-800 transition">Sab Funds Dikhao</button>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SIP CALCULATOR ===== -->
+<section class="py-16 bg-brand-light">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-brand-dark mb-2">🧮 SIP Calculator</h2>
+            <p class="text-slate-500 text-sm">Dekhein aapka paisa kitna badhega</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Inputs -->
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Monthly SIP Amount</label>
+                        <div class="flex items-center gap-3">
+                            <span class="text-brand-blue font-bold text-lg">₹</span>
+                            <input type="number" id="sip-amt" class="calc-input" value="5000" oninput="calcSIP()">
+                        </div>
+                        <input type="range" min="500" max="100000" step="500" value="5000" oninput="document.getElementById('sip-amt').value=this.value; calcSIP()" class="mt-2">
+                        <div class="flex justify-between text-xs text-slate-400"><span>₹500</span><span>₹1,00,000</span></div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Expected Return (% per year)</label>
+                        <input type="number" id="sip-rate" class="calc-input" value="12" oninput="calcSIP()">
+                        <input type="range" min="6" max="24" step="0.5" value="12" oninput="document.getElementById('sip-rate').value=this.value; calcSIP()" class="mt-2">
+                        <div class="flex justify-between text-xs text-slate-400"><span>6%</span><span>24%</span></div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Investment Period (Years)</label>
+                        <input type="number" id="sip-yrs" class="calc-input" value="10" oninput="calcSIP()">
+                        <input type="range" min="1" max="30" step="1" value="10" oninput="document.getElementById('sip-yrs').value=this.value; calcSIP()" class="mt-2">
+                        <div class="flex justify-between text-xs text-slate-400"><span>1 yr</span><span>30 yrs</span></div>
+                    </div>
+                </div>
+
+                <!-- Result -->
+                <div class="flex flex-col justify-center">
+                    <div class="bg-gradient-to-br from-brand-blue to-blue-800 rounded-2xl p-7 text-white">
+                        <p class="text-blue-300 text-xs font-bold uppercase tracking-widest mb-1">Maturity Amount</p>
+                        <div id="sip-maturity" class="text-4xl font-heading font-bold mb-1">₹9.20 L</div>
+                        <p class="text-blue-300 text-sm mb-5">estimated value</p>
+                        <div class="space-y-2 text-sm border-t border-blue-700 pt-4">
+                            <div class="flex justify-between"><span class="text-blue-300">Total Invested</span><span id="sip-invested" class="font-bold">₹6.00 L</span></div>
+                            <div class="flex justify-between"><span class="text-blue-300">Estimated Gains</span><span id="sip-gains" class="font-bold text-green-400">₹3.20 L</span></div>
+                            <div class="flex justify-between"><span class="text-blue-300">Wealth Multiple</span><span id="sip-mult" class="font-bold text-yellow-300">1.53x</span></div>
+                        </div>
+                        <div class="mt-4 bg-blue-900 bg-opacity-50 rounded-xl p-3">
+                            <p class="text-xs text-blue-200">⚠️ Yeh estimate hai. Actual returns market conditions par depend karti hain.</p>
+                        </div>
+                        <a href="index.html#contact" class="mt-4 block text-center font-bold py-3 rounded-full transition" style="background:#d4af37;color:#0f172a;">
+                            <i class="fas fa-phone-alt mr-2"></i> Best Fund Chunne Mein Help Lo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="py-16 bg-brand-blue text-white text-center">
+    <div class="max-w-4xl mx-auto px-4">
+        <h2 class="font-heading text-3xl font-bold mb-4">Sahi Fund Chunne Mein Help Chahiye?</h2>
+        <p class="mb-8 text-blue-100">Free consultation ke liye abhi contact karein — Jai Prakash ji personally guide karenge.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="index.html#contact" class="px-8 py-3 rounded-full font-bold hover:bg-yellow-500 transition" style="background:#d4af37;color:#0f172a">📋 Contact Now</a>
+            <a href="https://wa.me/919953657817" target="_blank" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-brand-blue transition flex items-center justify-center gap-2"><i class="fab fa-whatsapp"></i> WhatsApp Karein</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-brand-dark text-white py-8 text-center">
+    <p class="text-slate-400 text-sm">&copy; 2025 Jai Prakash Yadav. All Rights Reserved.</p>
+    <p class="text-sm mt-2">Website Designed &amp; Developed by <span style="color:#d4af37; font-weight:700;">Shubham Pal</span></p>
+</footer>
+
+<script>
+    var activeType = 'all';
+    var activeGoal = 'all';
+
+    function setGoal(goal, el) {
+        activeGoal = goal;
+        document.querySelectorAll('.goal-card').forEach(function(c){ c.classList.remove('active'); });
+        el.classList.add('active');
+        filterFunds();
+    }
+
+    function setFilter(type, el) {
+        activeType = type;
+        document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+        el.classList.add('active');
+        filterFunds();
+    }
+
+    function filterFunds() {
+        var search = document.getElementById('search-input').value.toLowerCase().trim();
+        var cards = document.querySelectorAll('.fund-card');
+        var visible = 0;
+        cards.forEach(function(card) {
+            var type = card.getAttribute('data-type') || '';
+            var goal = card.getAttribute('data-goal') || '';
+            var name = card.getAttribute('data-name') || '';
+            var cardText = card.innerText.toLowerCase();
+            var typeMatch = (activeType === 'all') || (type === activeType);
+            var goalMatch = (activeGoal === 'all') || (goal.indexOf(activeGoal) !== -1);
+            var searchMatch = !search || cardText.indexOf(search) !== -1 || name.indexOf(search) !== -1;
+            if (typeMatch && goalMatch && searchMatch) {
+                card.classList.remove('hidden-card');
+                visible++;
+            } else {
+                card.classList.add('hidden-card');
+            }
+        });
+        document.getElementById('no-result').style.display = (visible === 0) ? 'block' : 'none';
+        document.getElementById('result-count').textContent = visible + ' fund' + (visible !== 1 ? 's' : '') + ' dikh rahe hain';
+    }
+
+    function resetAll() {
+        activeType = 'all'; activeGoal = 'all';
+        document.getElementById('search-input').value = '';
+        document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+        document.querySelector('.filter-btn').classList.add('active');
+        document.querySelectorAll('.goal-card').forEach(function(c){ c.classList.remove('active'); });
+        filterFunds();
+    }
+
+    function fmt(n) {
+        if (n >= 10000000) return '₹' + (n/10000000).toFixed(2) + ' Cr';
+        if (n >= 100000)   return '₹' + (n/100000).toFixed(2) + ' L';
+        return '₹' + Math.round(n).toLocaleString('en-IN');
+    }
+
+    function calcSIP() {
+        var P    = parseFloat(document.getElementById('sip-amt').value)  || 5000;
+        var rate = parseFloat(document.getElementById('sip-rate').value) || 12;
+        var yrs  = parseFloat(document.getElementById('sip-yrs').value)  || 10;
+        var r    = rate / 100 / 12;
+        var n    = yrs * 12;
+        var mat  = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+        var inv  = P * n;
+        var gain = mat - inv;
+        document.getElementById('sip-maturity').textContent = fmt(mat);
+        document.getElementById('sip-invested').textContent = fmt(inv);
+        document.getElementById('sip-gains').textContent    = fmt(gain);
+        document.getElementById('sip-mult').textContent     = (mat / inv).toFixed(2) + 'x';
+    }
+
+    filterFunds();
+    calcSIP();
+</script>
+</body>
+</html>
